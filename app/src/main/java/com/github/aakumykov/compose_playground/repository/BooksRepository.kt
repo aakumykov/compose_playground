@@ -4,12 +4,15 @@ import com.github.aakumykov.compose_playground.entity.Book
 import com.github.aakumykov.compose_playground.repository.room.dao.BookDAO
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.withContext
 
 class BooksRepository (
-    private val coroutineDispatcher: CoroutineDispatcher = Dispatchers.IO,
     private val bookDAO: BookDAO,
+    private val coroutineDispatcher: CoroutineDispatcher = Dispatchers.IO,
 ) {
-    fun addBook(book: Book) {
-        bookDAO.addBook(book)
+    suspend fun addBook(book: Book) {
+        withContext(coroutineDispatcher) {
+            bookDAO.addBook(book)
+        }
     }
 }

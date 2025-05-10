@@ -1,6 +1,7 @@
 package com.github.aakumykov.compose_playground;
 
 import android.app.Application;
+import androidx.compose.runtime.traceEventEnd
 import androidx.room.Room
 import com.github.aakumykov.compose_playground.repository.room.AppDatabase
 
@@ -13,7 +14,9 @@ class App : Application() {
             this,
             AppDatabase::class.java,
             "app_database"
-        ).build()
+        )
+            .fallbackToDestructiveMigration(true)
+            .build()
     }
 
     companion object {

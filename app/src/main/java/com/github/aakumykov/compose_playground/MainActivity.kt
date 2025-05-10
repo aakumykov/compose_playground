@@ -13,8 +13,12 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.sp
+import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.viewmodel.compose.viewModel
+import com.github.aakumykov.compose_playground.repository.BooksRepository
+import com.github.aakumykov.compose_playground.repository.room.entity.RoomBook
 import com.github.aakumykov.compose_playground.ui.theme.Compose_playgroundTheme
+import kotlinx.coroutines.launch
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -26,6 +30,11 @@ class MainActivity : ComponentActivity() {
                     HomeScreen(modifier = Modifier.padding(innerPadding))
                 }
             }
+        }
+
+        lifecycleScope.launch {
+            BooksRepository(appDatabase.getBookDAO())
+                .addBook(RoomBook.create())
         }
     }
 }
