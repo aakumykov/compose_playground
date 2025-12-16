@@ -15,7 +15,7 @@ import com.github.aakumykov.compose_playground.repository.room.entity.RoomBookMe
 //    autoMigrations = [
 //        AutoMigration(from = 1, to = 2),
 //    ],
-    version = 2
+    version = 5
 )
 abstract class AppDatabase : RoomDatabase() {
 

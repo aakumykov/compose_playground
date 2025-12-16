@@ -1,11 +1,25 @@
 package com.github.aakumykov.compose_playground.repository.room.entity
 
-import com.github.aakumykov.compose_playground.entity.Book
+import androidx.room.Embedded
+import androidx.room.Relation
 
-class RoomBook private constructor() {
+class RoomBook(
+
+    @Embedded
+    val bookMetadata: RoomBookMetadata,
+
+    @Relation(
+        entity = RoomBookMetadata::class,
+        parentColumn = "",
+        entityColumn = ""
+    )
+    val bookData: RoomBookData
+) {
+
+
     companion object {
-        fun create(): Book = RoomBookMetadata.create().let {
-                Book(
+        fun create(): RoomBook = RoomBookMetadata.create().let {
+            RoomBook(
                     bookMetadata = it,
                     bookData = RoomBookData.create(it.id)
                 )

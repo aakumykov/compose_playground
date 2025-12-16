@@ -3,9 +3,6 @@ package com.github.aakumykov.compose_playground.repository.room.entity
 import androidx.room.Entity
 import androidx.room.ForeignKey
 import androidx.room.Index
-import com.github.aakumykov.compose_playground.entity.BookData
-import com.github.aakumykov.compose_playground.utils.fakeBook
-import com.github.aakumykov.compose_playground.utils.faker
 import com.github.aakumykov.compose_playground.utils.randomId
 
 @Entity(
@@ -13,6 +10,7 @@ import com.github.aakumykov.compose_playground.utils.randomId
     primaryKeys = ["id"],
     foreignKeys = [
         ForeignKey(
+            deferred = true,
             entity = RoomBookMetadata::class,
             parentColumns = ["id"],
             childColumns = ["parentId"],
@@ -28,9 +26,9 @@ class RoomBookData(
     val id: String,
     val parentId: String,
     val text: String,
-) : BookData {
+) {
     companion object {
-        fun create(metadataId: String): BookData = RoomBookData(
+        fun create(metadataId: String) = RoomBookData(
             id = randomId,
             parentId = metadataId,
             text = "Текст книги"
