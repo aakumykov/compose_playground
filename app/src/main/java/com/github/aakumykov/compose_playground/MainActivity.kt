@@ -40,6 +40,12 @@ class MainActivity : ComponentActivity() {
 
 @Composable
 fun Greeting(name: String, modifier: Modifier = Modifier) {
+
+    //
+    // При повороте экрана MyRememberObserver и Compose-функции не перезапускаются,
+    // потому что экран квадратный (!) А на прямоугольном ещё как перезапускаются.
+    //
+
     val myRememberObserver = remember { MyRememberObserver("Greeting") }
     Column(modifier = modifier.fillMaxSize().background(Color.Cyan)) {
         Text(name)
