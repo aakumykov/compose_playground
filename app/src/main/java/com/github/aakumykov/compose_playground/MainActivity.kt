@@ -1,6 +1,7 @@
 package com.github.aakumykov.compose_playground
 
 import android.os.Bundle
+import android.util.Log
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
@@ -12,6 +13,7 @@ import androidx.compose.material3.Checkbox
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -20,6 +22,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
 import com.github.aakumykov.compose_playground.ui.theme.Compose_playgroundTheme
+import kotlinx.coroutines.delay
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -36,17 +39,26 @@ class MainActivity : ComponentActivity() {
             }
         }
     }
+
+    companion object {
+        val TAG: String = MainActivity::class.java.simpleName
+    }
 }
 
 @Composable
 fun Greeting(name: String, modifier: Modifier = Modifier) {
-    val myRememberObserver = remember { MyRememberObserver("Greeting") }
+
     Column(modifier = modifier.fillMaxSize().background(Color.Cyan)) {
         Text(name)
         var checked by remember { mutableStateOf(false) }
         Checkbox(checked = checked, onCheckedChange = { checked = it })
         if (checked) {
-            val myObject = remember { MyRememberObserver("checked") }
+            LaunchedEffect(Unit) {
+                Log.d("Greeting", "LaunchedEffect {")
+                Log.d("Greeting", "     ждём 1 секунду")
+                delay(1000)
+                Log.d("Greeting", "}")
+            }
         }
     }
 }
