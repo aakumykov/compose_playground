@@ -47,16 +47,19 @@ class MainActivity : ComponentActivity() {
 
 @Composable
 fun Greeting(name: String, modifier: Modifier = Modifier) {
-
     Column(modifier = modifier.fillMaxSize().background(Color.Cyan)) {
         Text(name)
+
         var checked by remember { mutableStateOf(false) }
         Checkbox(checked = checked, onCheckedChange = { checked = it })
+
         if (checked) {
             LaunchedEffect(Unit) {
                 Log.d("Greeting", "LaunchedEffect {")
-                Log.d("Greeting", "     ждём 1 секунду")
-                delay(1000)
+                repeat(10) { i ->
+                    Log.d("Greeting", "     ждём ${i+1} секунд")
+                    delay(1000)
+                }
                 Log.d("Greeting", "}")
             }
         }
