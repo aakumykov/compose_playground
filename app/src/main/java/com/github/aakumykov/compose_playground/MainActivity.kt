@@ -21,7 +21,6 @@ class MainActivity : ComponentActivity() {
             Compose_playgroundTheme {
                 Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
                     Greeting(
-                        name = "Android",
                         modifier = Modifier.padding(innerPadding)
                     )
                 }
@@ -31,17 +30,14 @@ class MainActivity : ComponentActivity() {
 }
 
 @Composable
-fun Greeting(name: String, modifier: Modifier = Modifier) {
-    Text(
-        text = "Hello $name!",
-        modifier = modifier
-    )
+fun Greeting(modifier: Modifier = Modifier) {
+    LinearDeterminateIndicator(modifier = modifier)
 }
 
 @Preview(showBackground = true)
 @Composable
 fun GreetingPreview() {
     Compose_playgroundTheme {
-        Greeting("Android")
+        Greeting()
     }
 }
