@@ -15,6 +15,10 @@ import androidx.compose.material3.LinearProgressIndicator
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.State
+import androidx.compose.runtime.mutableFloatStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
@@ -42,20 +46,7 @@ class MainActivity : ComponentActivity() {
 fun Greeting(modifier: Modifier = Modifier) {
 //    LinearDeterminateIndicator(modifier = modifier)
     val progress = 0.6f
-    Row (
-        verticalAlignment = Alignment.CenterVertically,
-        modifier = modifier.fillMaxWidth()
-    ) {
-        LinearProgressIndicator(
-            progress = { progress },
-            modifier = Modifier.fillMaxWidth().weight(1f, true)
-        )
-        Text(
-            text = "${progress}%",
-            fontSize = 12.sp,
-            modifier = Modifier.padding(start = 8.dp, end = 4.dp)
-        )
-    }
+    ProgressWithText(remember { mutableFloatStateOf(progress) })
 }
 
 @Preview(showBackground = true)
@@ -63,5 +54,27 @@ fun Greeting(modifier: Modifier = Modifier) {
 fun GreetingPreview() {
     Compose_playgroundTheme {
         Greeting()
+    }
+}
+
+@Composable
+fun ProgressWithText(
+    progress: State<Float>,
+    modifier: Modifier = Modifier
+) {
+    val p = progress.value
+    Row (
+        verticalAlignment = Alignment.CenterVertically,
+        modifier = modifier.fillMaxWidth()
+    ) {
+        LinearProgressIndicator(
+            progress = { p },
+            modifier = Modifier.fillMaxWidth().weight(1f, true)
+        )
+        Text(
+            text = "${p}%",
+            fontSize = 12.sp,
+            modifier = Modifier.padding(start = 8.dp, end = 4.dp)
+        )
     }
 }
