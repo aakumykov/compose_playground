@@ -1,6 +1,7 @@
 package com.github.aakumykov.compose_playground
 
 import android.os.Bundle
+import android.util.Log
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
@@ -24,10 +25,13 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalGraphicsContext
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.github.aakumykov.compose_playground.ui.theme.Compose_playgroundTheme
+import com.github.aakumykov.compose_playground.utils.fakeName
+import com.github.aakumykov.compose_playground.utils.time2invoke
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -48,15 +52,15 @@ class MainActivity : ComponentActivity() {
 @Composable
 fun Greeting(modifier: Modifier = Modifier) {
 
-    val list = remember { mutableStateOf<List<String>>(listOf(
-        "Маша", "Даша", "Глаша"
-    )) }
+    val list = mutableListOf<String>(fakeName, fakeName, fakeName)
 
-    Column (modifier = modifier.fillMaxSize().background(Color(0xFFFFFBE9))) {
+    Column (modifier = modifier
+        .fillMaxSize()
+        .background(Color(0xFFFFFBE9))) {
         Text("--------------- начало ----------------", textAlign = TextAlign.Center, modifier = Modifier.fillMaxWidth())
 
         LazyColumn(modifier = Modifier.weight(1f)) {
-            items(items = list.value, key = { it }) { listItem ->
+            items(items = list, key = { it }) { listItem ->
                 Text(
                     listItem,
                     modifier = Modifier
@@ -71,7 +75,7 @@ fun Greeting(modifier: Modifier = Modifier) {
 
         Button(
             onClick = {
-
+                updateList(list)
             },
             modifier = Modifier.fillMaxWidth()
         ) {
@@ -85,5 +89,21 @@ fun Greeting(modifier: Modifier = Modifier) {
 fun GreetingPreview() {
     Compose_playgroundTheme {
         Greeting()
+    }
+}
+
+fun updateList(list: MutableList<String>) {
+    fun listString() = list.joinToString(",")
+
+    if (time2invoke(33) && list.size <= 5) {
+        list.add(fakeName)
+        Log.d("updateList", "добавление в список: ${listString()}")
+    } else if (time2invoke(33) && list.size >= 2) {
+        list.remove(list.random())
+        Log.d("updateList", "удаление из списка: ${listString()}")
+    } else {
+        val index = list.indexOf(list.random())
+        list[index] = fakeName
+        Log.d("updateList", "обновление списка: ${listString()}")
     }
 }

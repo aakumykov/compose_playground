@@ -4,3 +4,5 @@ import com.github.javafaker.Faker
 import java.util.Locale
 
 val faker: Faker by lazy { Faker(Locale("ru")) }
+
+val fakeName: String get() = faker.name().name()
