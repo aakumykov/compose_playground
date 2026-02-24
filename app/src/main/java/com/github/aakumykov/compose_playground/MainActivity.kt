@@ -14,6 +14,9 @@ import androidx.compose.material3.Button
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.mutableIntStateOf
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalGraphicsContext
@@ -38,18 +41,20 @@ class MainActivity : ComponentActivity() {
 
 @Composable
 fun Greeting(modifier: Modifier = Modifier) {
-    var counter = 0
+
+    val counter = remember { mutableIntStateOf(0) }
+
     Column (
         modifier = modifier.background(Color.Yellow)
     ) {
         Text(
-            text = "Счётчик=$counter",
+            text = "Счётчик=${counter.intValue}",
             modifier = Modifier.background(Color.Magenta)
         )
         Button(
             onClick = {
-                counter++
-                Log.d("щёччик", "counter=$counter")
+                counter.intValue++
+                Log.d("щёччик", "counter=${counter.intValue}")
             },
             modifier = Modifier.background(Color.Cyan)//.fillMaxWidth()
         ) {
