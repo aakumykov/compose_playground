@@ -52,7 +52,9 @@ class MainActivity : ComponentActivity() {
 @Composable
 fun Greeting(modifier: Modifier = Modifier) {
 
-    val list = mutableListOf<String>(fakeName, fakeName, fakeName)
+    val list = remember {
+        mutableStateListOf(fakeName, fakeName, fakeName)
+    }
 
     Column (modifier = modifier
         .fillMaxSize()
