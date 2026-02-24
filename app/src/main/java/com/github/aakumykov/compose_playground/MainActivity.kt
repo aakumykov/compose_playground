@@ -6,20 +6,16 @@ import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
 import androidx.compose.foundation.background
-import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Button
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.mutableIntStateOf
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
+import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.platform.LocalGraphicsContext
 import androidx.compose.ui.tooling.preview.Preview
 import com.github.aakumykov.compose_playground.ui.theme.Compose_playgroundTheme
 
@@ -42,25 +38,29 @@ class MainActivity : ComponentActivity() {
 @Composable
 fun Greeting(modifier: Modifier = Modifier) {
 
-    val counter = remember { mutableIntStateOf(0) }
+    val counter = rememberSaveable { mutableIntStateOf(0) }
 
-    Column (
-        modifier = modifier.background(Color.Yellow)
-    ) {
-        Text(
-            text = "Счётчик=${counter.intValue}",
-            modifier = Modifier.background(Color.Magenta)
-        )
-        Button(
-            onClick = {
-                counter.intValue++
-                Log.d("щёччик", "counter=${counter.intValue}")
-            },
-            modifier = Modifier.background(Color.Cyan)//.fillMaxWidth()
-        ) {
-            Text("Увеличить щёччик", modifier = Modifier.background(Color.Red))
+    CounterWithButton(
+        modifier = modifier,
+        text = {
+            Text(
+                text = "Счётчик=${counter.intValue}",
+                modifier = Modifier.background(Color.Magenta)
+            )
+        },
+        button = { onClick ->
+            Button(
+                onClick = onClick,
+                modifier = Modifier.background(Color.Cyan)
+            ) {
+                Text("Увеличить щёччик", modifier = Modifier.background(Color.Red))
+            }
+        },
+        onButtonClick = {
+            counter.intValue++
+            Log.d("щёччик", "counter=${counter.intValue}")
         }
-    }
+    )
 }
 
 @Preview(showBackground = true)
