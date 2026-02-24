@@ -1,15 +1,19 @@
 package com.github.aakumykov.compose_playground
 
 import android.os.Bundle
+import android.util.Log
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
+import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
+import androidx.compose.material3.Button
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalGraphicsContext
 import androidx.compose.ui.tooling.preview.Preview
 import com.github.aakumykov.compose_playground.ui.theme.Compose_playgroundTheme
 
@@ -21,7 +25,6 @@ class MainActivity : ComponentActivity() {
             Compose_playgroundTheme {
                 Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
                     Greeting(
-                        name = "Android",
                         modifier = Modifier.padding(innerPadding)
                     )
                 }
@@ -31,17 +34,28 @@ class MainActivity : ComponentActivity() {
 }
 
 @Composable
-fun Greeting(name: String, modifier: Modifier = Modifier) {
-    Text(
-        text = "Hello $name!",
-        modifier = modifier
-    )
+fun Greeting(modifier: Modifier = Modifier) {
+    var counter = 0
+    Column {
+        Text(
+            text = "Счётчик=$counter",
+            modifier = modifier
+        )
+        Button(
+            onClick = {
+                counter++
+                Log.d("щёччик", "counter=$counter")
+            }
+        ) {
+            Text("Увеличить щёччик")
+        }
+    }
 }
 
 @Preview(showBackground = true)
 @Composable
 fun GreetingPreview() {
     Compose_playgroundTheme {
-        Greeting("Android")
+        Greeting()
     }
 }
