@@ -69,6 +69,7 @@ fun DropDownMenuProbe1(/*modifier: Modifier = Modifier*/) {
                     onClick = {
                         textFieldState.setTextAndPlaceCursorAtEnd(option)
                         checkedIndex = index
+                        expanded = false
                     },
                     selectedLeadingIcon = {
                         Icon(
