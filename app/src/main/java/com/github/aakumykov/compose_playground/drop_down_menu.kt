@@ -31,7 +31,7 @@ val sampleData by lazy { buildList{ repeat(5) { add(randomString) } } }
 @OptIn(ExperimentalMaterial3Api::class, ExperimentalMaterial3ExpressiveApi::class)
 @Composable
 @Preview()
-fun DropDownMenuProbe1(modifier: Modifier = Modifier) {
+fun DropDownMenuProbe1(/*modifier: Modifier = Modifier*/) {
 
     val options: List<String> = sampleData
     var expanded: Boolean by remember { mutableStateOf(false) }
