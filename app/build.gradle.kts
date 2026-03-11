@@ -73,5 +73,9 @@ dependencies {
     implementation("androidx.compose.material3:material3:1.4.0")
     implementation("androidx.compose.material3:material3-window-size-class:1.4.0")
     implementation("androidx.compose.material3:material3-adaptive-navigation-suite:1.5.0-alpha15")
-//    implementation("androidx.compose.material:material:1.10.4")
+
+    implementation("androidx.compose.material:material-icons-core:1.7.8")
+//    implementation("androidx.compose.material:material-icons-extended:1.7.8")
+//    implementation("androidx.compose.material:material-icons-core-android:1.7.8")
+//    implementation("androidx.compose.material:material-icons-core-desktop:1.7.8")
 }
