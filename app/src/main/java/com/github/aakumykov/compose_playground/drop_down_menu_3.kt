@@ -7,6 +7,8 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.text.input.TextFieldLineLimits
 import androidx.compose.foundation.text.input.rememberTextFieldState
 import androidx.compose.foundation.text.input.setTextAndPlaceCursorAtEnd
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Check
 import androidx.compose.material3.DropdownMenuItem
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.ExperimentalMaterial3ExpressiveApi
@@ -82,13 +84,13 @@ fun DropDownMenu3(
                         expanded = false
                         onOptionSelected.invoke(textFieldState.text.toString())
                     },
-                    /*selectedLeadingIcon = {
+                    selectedLeadingIcon = {
                         Icon(
-                            painterResource(android.R.drawable.checkbox_on_background),
+                            Icons.Default.Check,
                             modifier = Modifier.size(MenuDefaults.LeadingIconSize),
                             contentDescription = null,
                         )
-                    },*/
+                    },
                     contentPadding = ExposedDropdownMenuDefaults.ItemContentPadding,
                 )
             }
