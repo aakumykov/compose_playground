@@ -40,14 +40,16 @@ class MainActivity : ComponentActivity() {
 
 @Composable
 fun Greeting(modifier: Modifier = Modifier) {
-//    val scope = rememberCoroutineScope()
+
     val context = LocalContext.current
+
     DropDownMenu3(
         menuLabel = stringResource(R.string.drop_down_menu_label)
         , options = fakeOptionList
+        , initialSelectedOption = fakeOptionList.random()
         , modifier = modifier
-        , onOptionSelected = { value: String ->
-            Toast.makeText(context, value, Toast.LENGTH_SHORT).show()
+        , onOptionSelected = {
+            Toast.makeText(context, it, Toast.LENGTH_SHORT).show()
         }
     )
 }

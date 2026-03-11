@@ -42,11 +42,12 @@ fun DropDownMenu3(
     options: List<String>,
     onOptionSelected: (optionItem:String) -> Unit,
     modifier: Modifier = Modifier,
+    initialSelectedOption: String? = null,
     isExpandedByDefault: Boolean = false,
 ) {
     var expanded: Boolean by remember { mutableStateOf(isExpandedByDefault) }
-    val textFieldState = rememberTextFieldState(options[0])
-    var checkedIndex: Int? by remember { mutableStateOf(null) }
+    val textFieldState = rememberTextFieldState(initialSelectedOption ?: "")
+    var checkedIndex: Int? by remember { mutableStateOf(options.indexOf(initialSelectedOption)) }
 
     ExposedDropdownMenuBox(
         expanded = expanded,
