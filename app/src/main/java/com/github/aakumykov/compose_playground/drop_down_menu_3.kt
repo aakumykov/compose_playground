@@ -75,15 +75,14 @@ fun DropDownMenu3(
         ) {
             options.forEachIndexed { index, optionText ->
                 DropdownMenuItem(
-                    shapes = MenuDefaults.itemShape(index, options.size),
                     text = { Text(optionText, style = MaterialTheme.typography.bodyLarge) },
-                    selected = index == checkedIndex,
                     onClick = {
-                        textFieldState.setTextAndPlaceCursorAtEnd(optionText)
                         checkedIndex = index
+                        textFieldState.setTextAndPlaceCursorAtEnd(optionText)
                         expanded = false
                         onOptionSelected.invoke(textFieldState.text.toString())
                     },
+                    selected = index == checkedIndex,
                     selectedLeadingIcon = {
                         Icon(
                             Icons.Default.Check,
@@ -91,6 +90,7 @@ fun DropDownMenu3(
                             contentDescription = null,
                         )
                     },
+                    shapes = MenuDefaults.itemShape(index, options.size),
                     contentPadding = ExposedDropdownMenuDefaults.ItemContentPadding,
                 )
             }
