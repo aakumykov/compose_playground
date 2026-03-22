@@ -43,7 +43,7 @@ fun Greeting(modifier: Modifier = Modifier) {
 
     val context = LocalContext.current
 
-    DropDownMenu3(
+    DropDownMenu(
         menuLabel = stringResource(R.string.drop_down_menu_label)
         , options = fakeOptionList
         , initialSelectedOption = fakeOptionList.random()
