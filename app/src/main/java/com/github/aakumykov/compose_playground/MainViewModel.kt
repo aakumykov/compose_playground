@@ -1,17 +1,14 @@
 package com.github.aakumykov.compose_playground
 
-import androidx.compose.runtime.IntState
 import androidx.compose.runtime.mutableIntStateOf
 import androidx.lifecycle.ViewModel
+import kotlinx.coroutines.flow.MutableStateFlow
 
 class MainViewModel : ViewModel() {
 
-    private val _clickCounter = mutableIntStateOf(0)
-    val clickCounter: IntState = _clickCounter
+    val clickCounterState = mutableIntStateOf(0)
 
-    fun onCounterClicked() {
-        _clickCounter.intValue++
-    }
+    val constantIntStateFlow: MutableStateFlow<Int> = MutableStateFlow(0)
 
     // TODO: Flow, LiveData
 }
