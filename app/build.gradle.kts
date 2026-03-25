@@ -68,7 +68,7 @@ dependencies {
     debugImplementation(libs.androidx.ui.tooling)
     debugImplementation(libs.androidx.ui.test.manifest)
 
-    implementation("com.github.aakumykov:java-faker:050215a3e9")
+//    implementation("com.github.aakumykov:java-faker:525aaf096b")
 
     implementation("androidx.compose.material3:material3:1.4.0")
     implementation("androidx.compose.material3:material3-window-size-class:1.4.0")
