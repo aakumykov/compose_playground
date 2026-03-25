@@ -1,4 +1,7 @@
 <resources>
     <string name="app_name">compose_playground</string>
     <string name="drop_down_menu_label">Город</string>
+    <string name="option_first">Протий</string>
+    <string name="option_second">Дейтерий</string>
+    <string name="option_third">Тритий</string>
 </resources>

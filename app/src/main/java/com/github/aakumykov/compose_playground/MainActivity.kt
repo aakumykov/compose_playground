@@ -14,6 +14,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.platform.LocalResources
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import com.github.aakumykov.compose_playground.ui.theme.Compose_playgroundTheme
@@ -42,14 +43,18 @@ class MainActivity : ComponentActivity() {
 fun Greeting(modifier: Modifier = Modifier) {
 
     val context = LocalContext.current
+    val resources = LocalResources.current
 
     DropDownMenu(
-        menuLabel = stringResource(R.string.drop_down_menu_label)
-        , options = fakeOptionList
-        , initialSelectedOption = fakeOptionList.random()
-        , modifier = modifier
-        , onOptionSelected = {
-            Toast.makeText(context, it, Toast.LENGTH_SHORT).show()
-        }
+        label = stringResource(R.string.drop_down_menu_label),
+        optionList = Option.entries.toList(),
+        modifier = modifier
+            .background(Color.Yellow)
+            .fillMaxWidth()
+            .padding(top = 48.dp),
+        onOptionSelected = {
+            Toast.makeText(context, Option.option2string(it,resources),Toast.LENGTH_SHORT).show()
+        },
+        option2string = Option.option2string
     )
 }
