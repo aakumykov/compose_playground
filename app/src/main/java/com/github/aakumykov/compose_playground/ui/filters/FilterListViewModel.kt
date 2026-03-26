@@ -7,10 +7,12 @@ import com.github.aakumykov.compose_playground.repository.FilterRepository
 import com.github.aakumykov.compose_playground.ui.model.FilterListUIState
 import dagger.hilt.android.lifecycle.HiltViewModel
 import jakarta.inject.Inject
+import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.map
+import kotlinx.coroutines.flow.mapLatest
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
 
@@ -19,14 +21,16 @@ class FilterListViewModel @Inject constructor(
     private val filterRepository: FilterRepository
 ): ViewModel() {
 
+    @OptIn(ExperimentalCoroutinesApi::class)
     val uiState: StateFlow<FilterListUIState> = filterRepository
         .filters
-        .let {
-            it
+        .mapLatest<List<Filter>,FilterListUIState> { filterList ->
+            FilterListUIState.Success(filterList)
         }
-        .map<List<Filter>,FilterListUIState> {
+        /*.map<List<Filter>,FilterListUIState> {
+            println(1)
             FilterListUIState.Success(it)
-        }
+        }*/
         .catch { emit(FilterListUIState.Error(it)) }
         .stateIn(
             viewModelScope,

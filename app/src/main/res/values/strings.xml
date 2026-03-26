@@ -1,3 +1,4 @@
 <resources>
     <string name="app_name">compose_playground</string>
+    <string name="description_filter_add_button">Добавить фильтр</string>
 </resources>
