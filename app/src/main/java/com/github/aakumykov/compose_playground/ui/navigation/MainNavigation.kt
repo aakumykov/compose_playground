@@ -1,4 +1,4 @@
-package com.github.aakumykov.compose_playground.ui
+package com.github.aakumykov.compose_playground.ui.navigation
 
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.safeDrawingPadding
