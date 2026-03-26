@@ -1,17 +1,21 @@
 package com.github.aakumykov.compose_playground.ui.filters
 
-import androidx.compose.foundation.border
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material3.CircularProgressIndicator
-import androidx.compose.material3.LinearProgressIndicator
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
@@ -35,7 +39,7 @@ fun FilterListScreen(
             modifier = modifier
         )
         is FilterListUIState.Loading -> FilterListLoadingScreen(
-            modifier = modifier
+            modifier = modifier.fillMaxSize()
         )
         else -> FilterListErrorScreen(
             (uiState as FilterListUIState.Error).throwable,
@@ -64,20 +68,17 @@ fun FilterListScreen(
 }
 
 
+@Preview(showSystemUi = true)
 @Composable
 fun FilterListLoadingScreen(modifier: Modifier = Modifier){
-//    CircularProgressIndicator(
-//        modifier = modifier.fillMaxWidth()
-//    )
-    /*LinearProgressIndicator(
+    Box(
+        contentAlignment = Alignment.Center,
         modifier = modifier
-            .fillMaxWidth()
-            .height(5.dp)
-    )*/
-    Text(
-        text = "Ожидание...",
-        modifier = modifier.fillMaxWidth()
-    )
+    ) {
+        CircularProgressIndicator(
+            modifier = modifier.size(50.dp)
+        )
+    }
 }
 
 
