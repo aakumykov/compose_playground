@@ -1,10 +1,13 @@
 package com.github.aakumykov.compose_playground.ui.filters
 
+import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material3.CircularProgressIndicator
+import androidx.compose.material3.LinearProgressIndicator
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -63,7 +66,18 @@ fun FilterListScreen(
 
 @Composable
 fun FilterListLoadingScreen(modifier: Modifier = Modifier){
-    CircularProgressIndicator(modifier = modifier.fillMaxWidth())
+//    CircularProgressIndicator(
+//        modifier = modifier.fillMaxWidth()
+//    )
+    /*LinearProgressIndicator(
+        modifier = modifier
+            .fillMaxWidth()
+            .height(5.dp)
+    )*/
+    Text(
+        text = "Ожидание...",
+        modifier = modifier.fillMaxWidth()
+    )
 }
 
 
