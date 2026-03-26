@@ -5,6 +5,7 @@ import androidx.lifecycle.viewModelScope
 import com.github.aakumykov.compose_playground.data.model.Filter
 import com.github.aakumykov.compose_playground.repository.FilterRepository
 import com.github.aakumykov.compose_playground.ui.model.FilterListUIState
+import dagger.hilt.android.lifecycle.HiltViewModel
 import jakarta.inject.Inject
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
@@ -13,6 +14,7 @@ import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
 
+@HiltViewModel
 class FilterListViewModel @Inject constructor(
     private val filterRepository: FilterRepository
 ): ViewModel() {
