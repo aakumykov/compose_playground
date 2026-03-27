@@ -33,7 +33,7 @@ fun FilterEditScreen(
     when(uiState) {
 
         is FilterEditUIState.Success -> {
-            FilterEditScreen(
+            FilterEditForm(
                 state = uiState as FilterEditUIState.Success,
                 modifier = modifier,
                 onSaveClicked = onFilterSaved,
@@ -56,7 +56,7 @@ fun FilterEditScreen(
 
 
 @Composable
-fun FilterEditScreen(
+fun FilterEditForm(
     state: FilterEditUIState.Success,
     modifier: Modifier = Modifier,
     onSaveClicked: () -> Unit,
@@ -80,12 +80,13 @@ fun FilterEditScreen(
     }
 }
 
+/*
 @Preview(showSystemUi = true)
 @Composable
 fun FilterEditScreenPreview() {
-    FilterEditScreen(
+    FilterEditForm(
         state = FilterEditUIState.Success(Filter.createRandom()),
         onSaveClicked = {},
         onCancelClicked = {},
     )
-}
+}*/
