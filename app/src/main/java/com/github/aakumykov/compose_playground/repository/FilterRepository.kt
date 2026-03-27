@@ -7,5 +7,5 @@ interface FilterRepository {
     val filters: Flow<List<Filter>>
     suspend fun add(filter: Filter)
     suspend fun removeAllFilters()
-    suspend fun get(filterId: String?): Filter?
+    fun get(filterId: String?): Flow<Filter?>
 }

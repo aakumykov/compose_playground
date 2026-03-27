@@ -41,9 +41,9 @@ fun MainNavigationOld(modifier: Modifier = Modifier) {
         // Правка фильтра
         //
         composable(
-            route = "${NavTarget.FILTER_EDIT}/{${NavArguments.PACKAGE_NAME}}",
+            route = "${NavTarget.FILTER_EDIT}/{${NavArguments.FILTER_ID}}",
             arguments = listOf(
-                navArgument(NavArguments.PACKAGE_NAME) { type = NavType.StringType },
+                navArgument(NavArguments.FILTER_ID) { type = NavType.StringType },
             )
         ) {
             FilterEditScreen(

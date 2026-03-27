@@ -19,5 +19,5 @@ interface FilterDAO {
     fun deleteAll()
 
     @Query("SELECT * FROM filters WHERE id = :filterId")
-    fun get(filterId: String?): Filter?
+    fun getFilterAsFlow(filterId: String?): Flow<Filter?>
 }
