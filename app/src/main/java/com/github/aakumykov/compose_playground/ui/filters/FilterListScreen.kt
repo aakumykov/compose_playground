@@ -9,6 +9,7 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.FloatingActionButton
+import androidx.compose.material3.FloatingActionButtonDefaults
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
@@ -42,9 +43,8 @@ fun FilterListScreen(
     if (uiState is FilterListUIState.Success) {
         FilterListScreen(
             (uiState as FilterListUIState.Success).list,
-            onAddClicked = {
-                viewModel.addFilter(Filter.createRandom())
-            },
+            onAddClicked = { viewModel.addFilter(Filter.createRandom()) },
+            onClearClicked = { viewModel.removeAllFilters() },
             modifier = modifier
         )
     } else if (uiState is FilterListUIState.Loading) {
@@ -57,20 +57,13 @@ fun FilterListScreen(
             modifier = modifier,
         )
     }
-
-    /*val scope = rememberCoroutineScope()
-
-    LaunchedEffect(Unit) {
-        scope.launch {
-            viewModel.addFilter(Filter.createRandom())
-        }
-    }*/
 }
 
 @Composable
 fun FilterListScreen(
     list: List<Filter>,
     onAddClicked: () -> Unit,
+    onClearClicked: () -> Unit,
     modifier: Modifier = Modifier
 ) {
     Box(modifier = modifier.fillMaxWidth()) {
@@ -92,6 +85,16 @@ fun FilterListScreen(
         ) {
             Icon (
                 painter = painterResource(R.drawable.baseline_add_24),
+                contentDescription = stringResource(R.string.description_filter_add_button)
+            )
+        }
+        FloatingActionButton(
+            onClick = onClearClicked,
+            shape = FloatingActionButtonDefaults.smallShape,
+            modifier = Modifier.align(Alignment.BottomStart)
+        ) {
+            Icon (
+                painter = painterResource(R.drawable.outline_clear_all_24),
                 contentDescription = stringResource(R.string.description_filter_add_button)
             )
         }

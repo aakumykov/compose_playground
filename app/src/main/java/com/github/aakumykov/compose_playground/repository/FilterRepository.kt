@@ -5,5 +5,7 @@ import kotlinx.coroutines.flow.Flow
 
 interface FilterRepository {
     val filters: Flow<List<Filter>>
+    fun listAsFlow(): Flow<List<Filter>>
     suspend fun add(filter: Filter)
+    suspend fun removeAllFilters()
 }
