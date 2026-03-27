@@ -18,8 +18,9 @@ class DefaultFilterRepository @Inject constructor(
     private val filterDAO: FilterDAO
 ): FilterRepository {
 
-    override val filters: Flow<List<Filter>>
-        get() = Filter.fakeListFlow()
+    override val filters: Flow<List<Filter>> get() {
+        return Filter.fakeListFlow()
+    }
 
     override fun listAsFlow(): Flow<List<Filter>> {
         return filterDAO.listAsFlow()

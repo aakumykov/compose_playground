@@ -22,8 +22,8 @@ class FilterListViewModel @Inject constructor(
 ): ViewModel() {
 
     val uiState: StateFlow<FilterListUIState> = filterRepository
-//        .filters
-        .listAsFlow()
+        .filters
+//        .listAsFlow()
         /*.map<List<Filter>,FilterListUIState> { filterList ->
             FilterListUIState.Success(filterList)
         }*/
