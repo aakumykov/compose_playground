@@ -8,7 +8,7 @@ import androidx.compose.ui.unit.dp
 import androidx.navigation3.runtime.entryProvider
 import androidx.navigation3.runtime.rememberNavBackStack
 import androidx.navigation3.ui.NavDisplay
-import com.github.aakumykov.compose_playground.ui.filters.FilterListScreen
+import com.github.aakumykov.compose_playground.ui.filter_list.FilterListScreen
 
 @Composable
 fun MainNavigation() {

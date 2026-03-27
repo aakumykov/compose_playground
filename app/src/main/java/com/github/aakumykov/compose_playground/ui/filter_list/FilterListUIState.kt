@@ -1,4 +1,4 @@
-package com.github.aakumykov.compose_playground.ui.model
+package com.github.aakumykov.compose_playground.ui.filter_list
 
 import com.github.aakumykov.compose_playground.data.model.Filter
 

@@ -1,4 +1,4 @@
-package com.github.aakumykov.compose_playground.ui.filters
+package com.github.aakumykov.compose_playground.ui.filter_list
 
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
@@ -29,7 +29,7 @@ import com.github.aakumykov.compose_playground.R
 import com.github.aakumykov.compose_playground.data.model.Filter
 import com.github.aakumykov.compose_playground.extensions.errorMsgExtended
 import com.github.aakumykov.compose_playground.ui.common.ErrorText
-import com.github.aakumykov.compose_playground.ui.model.FilterListUIState
+import com.github.aakumykov.compose_playground.ui.filter_list.FilterListUIState
 
 @Composable
 fun FilterListScreen(
