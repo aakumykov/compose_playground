@@ -13,12 +13,12 @@ import javax.inject.Inject
 import javax.inject.Named
 
 class DefaultFilterRepository @Inject constructor(
-    @Named("qwerty")
+    @Named(DispatcherType.IO)
     private val dispatcher: CoroutineDispatcher = Dispatchers.IO,
     private val filterDAO: FilterDAO
 ): FilterRepository {
 
-    override val filters: Flow<List<Filter>> = Filter.fakeListFlow()//filterDAO.list()
+    override val filters: Flow<List<Filter>> = filterDAO.list()
 
     override suspend fun add(filter: Filter) = withContext(dispatcher) { filterDAO.add(filter) }
 

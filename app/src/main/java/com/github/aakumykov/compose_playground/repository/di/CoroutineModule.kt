@@ -13,7 +13,7 @@ import javax.inject.Named
 class CoroutineModule {
 
     @Provides
-    @Named("qwerty")
+    @Named(DispatcherType.IO)
     fun provideDispatcherIO(): CoroutineDispatcher {
         return Dispatchers.IO
     }
