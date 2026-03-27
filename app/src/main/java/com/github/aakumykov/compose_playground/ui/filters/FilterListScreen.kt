@@ -39,23 +39,29 @@ fun FilterListScreen(
 ) {
     val uiState: FilterListUIState by viewModel.uiState.collectAsStateWithLifecycle()
 
-    if (uiState is FilterListUIState.Success) {
-        FilterListScreen(
-            (uiState as FilterListUIState.Success).list,
-            onItemClicked = onItemClicked,
-            onAddClicked = { viewModel.addFilter(Filter.createRandom()) },
-            onClearClicked = { viewModel.removeAllFilters() },
-            modifier = modifier
-        )
-    } else if (uiState is FilterListUIState.Loading) {
-        FilterListLoadingScreen(
+    when (uiState) {
+        is FilterListUIState.Success -> {
+            FilterListScreen(
+                (uiState as FilterListUIState.Success).list,
+                onItemClicked = onItemClicked,
+                onAddClicked = { viewModel.addFilter(Filter.createRandom()) },
+                onClearClicked = { viewModel.removeAllFilters() },
+                modifier = modifier
+            )
+        }
+
+        is FilterListUIState.Loading -> {
+            FilterListLoadingScreen(
 //            modifier = modifier.fillMaxSize()
-        )
-    } else {
-        FilterListErrorScreen(
-            (uiState as FilterListUIState.Error).throwable,
-            modifier = modifier,
-        )
+            )
+        }
+
+        else -> {
+            FilterListErrorScreen(
+                (uiState as FilterListUIState.Error).throwable,
+                modifier = modifier,
+            )
+        }
     }
 }
 
