@@ -24,7 +24,7 @@ fun MainNavigationNew() {
             entry<FilterList> {
                 FilterListScreen(
                     onItemClicked = { filterId ->
-
+                        backStack.add(FilterEdit(filterId))
                     },
                     modifier = Modifier.safeDrawingPadding().padding(16.dp)
                 )
