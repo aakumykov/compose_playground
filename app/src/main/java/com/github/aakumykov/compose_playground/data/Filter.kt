@@ -31,10 +31,11 @@ data class Filter(
 
         fun fakeList(size: Int = 5): List<Filter> = buildList {
             repeat(size) {
-                add(Filter.createRandom())
+                add(createRandom())
             }
         }
 
-        fun fakeListFlow(size: Int = 5): Flow<List<Filter>> = flow { fakeList(size) }
+        fun fakeListFlow(size: Int = 5): Flow<List<Filter>>
+            = flow { emit(fakeList(size)) }
     }
 }

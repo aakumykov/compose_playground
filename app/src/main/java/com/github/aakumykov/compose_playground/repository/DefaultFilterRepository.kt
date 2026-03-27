@@ -18,17 +18,9 @@ class DefaultFilterRepository @Inject constructor(
     private val filterDAO: FilterDAO
 ): FilterRepository {
 
-    override val filters: Flow<List<Filter>> = filterDAO.listAsFlow()
+    override val filters: Flow<List<Filter>> = Filter.fakeListFlow()//filterDAO.list()
 
-    override fun listAsFlow(): Flow<List<Filter>> {
-        return filterDAO.listAsFlow()
-    }
+    override suspend fun add(filter: Filter) = withContext(dispatcher) { filterDAO.add(filter) }
 
-    override suspend fun add(filter: Filter) = withContext(dispatcher) {
-        filterDAO.add(filter)
-    }
-
-    override suspend fun removeAllFilters() = withContext(dispatcher) {
-        filterDAO.deleteAll()
-    }
+    override suspend fun removeAllFilters() = withContext(dispatcher) { filterDAO.deleteAll() }
 }

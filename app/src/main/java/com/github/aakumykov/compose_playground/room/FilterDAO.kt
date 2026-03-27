@@ -15,9 +15,6 @@ interface FilterDAO {
     @Query("SELECT * FROM filters ORDER BY modified ASC")
     fun list(): Flow<List<Filter>>
 
-    @Query("SELECT * FROM filters")
-    fun listAsFlow(): Flow<List<Filter>>
-
     @Query("DELETE FROM filters")
     fun deleteAll()
 }
