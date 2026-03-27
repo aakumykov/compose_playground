@@ -8,6 +8,7 @@ import androidx.compose.ui.unit.dp
 import androidx.navigation3.runtime.entryProvider
 import androidx.navigation3.runtime.rememberNavBackStack
 import androidx.navigation3.ui.NavDisplay
+import com.github.aakumykov.compose_playground.ui.filter_edit.FilterEditScreen
 import com.github.aakumykov.compose_playground.ui.filter_list.FilterListScreen
 
 @Composable
@@ -19,9 +20,22 @@ fun MainNavigation() {
         backStack = backStack,
         onBack = { backStack.removeLastOrNull() },
         entryProvider = entryProvider {
+
             entry<FilterList> {
                 FilterListScreen(
                     onItemClicked = { filterId ->
+
+                    },
+                    modifier = Modifier.safeDrawingPadding().padding(16.dp)
+                )
+            }
+
+            entry<FilterEdit> {
+                FilterEditScreen(
+                    onSaveClicked = {
+
+                    },
+                    onCancelClicked = {
 
                     },
                     modifier = Modifier.safeDrawingPadding().padding(16.dp)

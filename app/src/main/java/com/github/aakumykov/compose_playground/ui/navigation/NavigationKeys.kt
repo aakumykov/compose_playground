@@ -21,3 +21,6 @@ import kotlinx.serialization.Serializable
 
 @Serializable
 data object FilterList : NavKey
+
+@Serializable
+data object FilterEdit : NavKey
