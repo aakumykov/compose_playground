@@ -1,4 +1,4 @@
-package com.github.aakumykov.compose_playground.ui.navigation
+package com.github.aakumykov.compose_playground.ui.navigation.newer
 
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.safeDrawingPadding
@@ -12,7 +12,7 @@ import com.github.aakumykov.compose_playground.ui.filter_edit.FilterEditScreen
 import com.github.aakumykov.compose_playground.ui.filter_list.FilterListScreen
 
 @Composable
-fun MainNavigation() {
+fun MainNavigationNew() {
 
     val backStack = rememberNavBackStack(FilterList)
 
@@ -32,7 +32,8 @@ fun MainNavigation() {
 
             entry<FilterEdit> {
                 FilterEditScreen(
-                    onSaveClicked = {
+                    filterId = null,
+                    onFilterSaved = {
 
                     },
                     onCancelClicked = {

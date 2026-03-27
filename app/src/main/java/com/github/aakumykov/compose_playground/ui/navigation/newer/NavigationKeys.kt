@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.github.aakumykov.compose_playground.ui.navigation
+package com.github.aakumykov.compose_playground.ui.navigation.newer
 
 import androidx.navigation3.runtime.NavKey
 import kotlinx.serialization.Serializable

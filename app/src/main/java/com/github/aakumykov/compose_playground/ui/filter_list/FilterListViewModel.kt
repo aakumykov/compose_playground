@@ -2,9 +2,8 @@ package com.github.aakumykov.compose_playground.ui.filter_list
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.github.aakumykov.compose_playground.data.model.Filter
+import com.github.aakumykov.compose_playground.model.Filter
 import com.github.aakumykov.compose_playground.repository.FilterRepository
-import com.github.aakumykov.compose_playground.ui.filter_list.FilterListUIState
 import dagger.hilt.android.lifecycle.HiltViewModel
 import jakarta.inject.Inject
 import kotlinx.coroutines.flow.SharingStarted

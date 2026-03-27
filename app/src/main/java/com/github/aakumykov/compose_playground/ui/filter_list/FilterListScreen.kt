@@ -26,10 +26,10 @@ import androidx.compose.ui.unit.sp
 import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.github.aakumykov.compose_playground.R
-import com.github.aakumykov.compose_playground.data.model.Filter
+import com.github.aakumykov.compose_playground.model.Filter
 import com.github.aakumykov.compose_playground.extensions.errorMsgExtended
 import com.github.aakumykov.compose_playground.ui.common.ErrorText
-import com.github.aakumykov.compose_playground.ui.filter_list.FilterListUIState
+import com.github.aakumykov.compose_playground.ui.common.LoadingThrobber
 
 @Composable
 fun FilterListScreen(
@@ -123,14 +123,7 @@ fun FilterListScreenPreview() {
 
 @Composable
 fun FilterListLoadingScreen(modifier: Modifier = Modifier){
-    Box(
-        contentAlignment = Alignment.Center,
-        modifier = modifier.fillMaxSize()
-    ) {
-        CircularProgressIndicator(
-            modifier = modifier.size(50.dp)
-        )
-    }
+    LoadingThrobber(modifier = modifier)
 }
 
 @Preview(showSystemUi = false)

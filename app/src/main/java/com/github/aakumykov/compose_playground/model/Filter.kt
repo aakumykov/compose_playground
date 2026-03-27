@@ -1,4 +1,4 @@
-package com.github.aakumykov.compose_playground.data.model
+package com.github.aakumykov.compose_playground.model
 
 import androidx.room.ColumnInfo
 import androidx.room.Entity
@@ -39,3 +39,4 @@ data class Filter(
             = flow { emit(fakeList(size)) }
     }
 }
+
