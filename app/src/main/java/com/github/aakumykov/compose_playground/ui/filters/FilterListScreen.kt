@@ -15,9 +15,7 @@ import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
@@ -32,7 +30,6 @@ import com.github.aakumykov.compose_playground.data.model.Filter
 import com.github.aakumykov.compose_playground.extensions.errorMsgExtended
 import com.github.aakumykov.compose_playground.ui.common.ErrorText
 import com.github.aakumykov.compose_playground.ui.model.FilterListUIState
-import kotlinx.coroutines.launch
 
 @Composable
 fun FilterListScreen(
@@ -64,7 +61,7 @@ fun FilterListScreen(
 @Composable
 fun FilterListScreen(
     list: List<Filter>,
-    onItemClicked: (filter: Filter) -> Unit,
+    onItemClicked: (filterId: String) -> Unit,
     onAddClicked: () -> Unit,
     onClearClicked: () -> Unit,
     modifier: Modifier = Modifier
@@ -79,7 +76,7 @@ fun FilterListScreen(
                         .fillMaxWidth()
                         .padding(horizontal = 32.dp, vertical = 16.dp)
                         .clickable {
-                            onItemClicked.invoke(filter)
+                            onItemClicked.invoke(filter.id)
                         }
                 )
                 HorizontalDivider()
