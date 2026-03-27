@@ -33,6 +33,7 @@ import com.github.aakumykov.compose_playground.ui.model.FilterListUIState
 
 @Composable
 fun FilterListScreen(
+    onItemClicked: (filterId: String) -> Unit,
     modifier: Modifier = Modifier,
     viewModel: FilterListViewModel = hiltViewModel(),
 ) {
@@ -41,7 +42,7 @@ fun FilterListScreen(
     if (uiState is FilterListUIState.Success) {
         FilterListScreen(
             (uiState as FilterListUIState.Success).list,
-            onItemClicked = { filter ->  },
+            onItemClicked = onItemClicked,
             onAddClicked = { viewModel.addFilter(Filter.createRandom()) },
             onClearClicked = { viewModel.removeAllFilters() },
             modifier = modifier

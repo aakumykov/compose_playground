@@ -21,6 +21,9 @@ fun MainNavigation() {
         entryProvider = entryProvider {
             entry<FilterList> {
                 FilterListScreen(
+                    onItemClicked = { filterId ->
+
+                    },
                     modifier = Modifier.safeDrawingPadding().padding(16.dp)
                 )
             }
