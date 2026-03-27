@@ -1,5 +1,6 @@
 package com.github.aakumykov.compose_playground.ui.filters
 
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -43,6 +44,7 @@ fun FilterListScreen(
     if (uiState is FilterListUIState.Success) {
         FilterListScreen(
             (uiState as FilterListUIState.Success).list,
+            onItemClicked = { filter ->  },
             onAddClicked = { viewModel.addFilter(Filter.createRandom()) },
             onClearClicked = { viewModel.removeAllFilters() },
             modifier = modifier
@@ -62,6 +64,7 @@ fun FilterListScreen(
 @Composable
 fun FilterListScreen(
     list: List<Filter>,
+    onItemClicked: (filter: Filter) -> Unit,
     onAddClicked: () -> Unit,
     onClearClicked: () -> Unit,
     modifier: Modifier = Modifier
@@ -75,6 +78,9 @@ fun FilterListScreen(
                     modifier = Modifier
                         .fillMaxWidth()
                         .padding(horizontal = 32.dp, vertical = 16.dp)
+                        .clickable {
+                            onItemClicked.invoke(filter)
+                        }
                 )
                 HorizontalDivider()
             }
