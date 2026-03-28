@@ -15,12 +15,15 @@ import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asFlow
 import kotlinx.coroutines.flow.catch
+import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.flatMapLatest
+import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.mapLatest
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.withContext
+import kotlin.collections.map
 import kotlin.time.Duration.Companion.seconds
 
 @HiltViewModel
@@ -28,21 +31,34 @@ class FilterEditViewModel @Inject constructor(
     private val filterRepository: FilterRepository
 ) : ViewModel() {
 
-    init {
-        println()
+    private val filterStates
+        = mutableMapOf<String?, StateFlow<FilterEditUIState>>()
+
+    fun getFilterAsStateFlow(filterId: String?): StateFlow<FilterEditUIState> {
+
+        return filterStates.getOrPut(filterId) {
+            flow {
+                val result = try {
+                    when (filterId) {
+                        null -> FilterEditUIState.Error(NoSuchFilterException(null))
+                        else -> filterRepository.get(filterId)
+                            ?.let { FilterEditUIState.Success(it) }
+                            ?: FilterEditUIState.Error(NoSuchFilterException(filterId))
+                    }
+                } catch (e: Exception) {
+                    FilterEditUIState.Error(e)
+                }
+                emit(result)
+            }.stateIn(
+                scope = viewModelScope,
+                started = SharingStarted.WhileSubscribed(5000),
+                initialValue = FilterEditUIState.Loading,
+            )
+        }
     }
 
-    /*val uiState: StateFlow<FilterListUIState> = filterRepository
-        .filters
-        .map<List<Filter>,FilterListUIState> { FilterListUIState.Success(it) }
-        .catch { emit(FilterListUIState.Error(it)) }
-        .stateIn(
-            viewModelScope,
-            SharingStarted.WhileSubscribed(5000),
-            FilterListUIState.Loading
-        )*/
 
-    @OptIn(ExperimentalCoroutinesApi::class)
+    /*@OptIn(ExperimentalCoroutinesApi::class)
     fun getFilterAsStateFlow(filterId: String?): StateFlow<FilterEditUIState> {
         return flowOf(filterId)
             .map {
@@ -53,23 +69,11 @@ class FilterEditViewModel @Inject constructor(
                 if (null != it) FilterEditUIState.Success(it)
                 else FilterEditUIState.Error(NoSuchFilterException(filterId))
             }
+            .catch { emit(FilterEditUIState.Error(it)) }
             .stateIn(
                 scope = viewModelScope,
                 started = SharingStarted.WhileSubscribed(5000),
                 initialValue = FilterEditUIState.Loading,
             )
-    }
-
-
-
-    /*val selectedNote: StateFlow<Filter?> = selectedNoteId
-        .flatMapLatest {
-            if (it == null) flowOf(null)
-            else dao.getSingleNoteByID(it)
-        }
-        .stateIn(
-            scope = viewModelScope,
-            started = SharingStarted.WhileSubscribed(5.seconds),
-            initialValue = null,
-        )*/
+    }*/
 }

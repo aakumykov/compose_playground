@@ -26,9 +26,6 @@ class DefaultFilterRepository @Inject constructor(
         filterDAO.deleteAll()
     }
 
-    override fun getAsFlow(filterId: String?): Flow<Filter?> =
-        filterDAO.getFilterAsFlow(filterId)
-
     override suspend fun get(filterId: String?): Filter? = withContext(dispatcher) {
         filterDAO.get(filterId)
     }

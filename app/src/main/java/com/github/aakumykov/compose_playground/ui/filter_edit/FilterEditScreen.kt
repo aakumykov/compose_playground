@@ -30,9 +30,7 @@ fun FilterEditScreen(
     modifier: Modifier = Modifier,
     viewModel: FilterEditViewModel = hiltViewModel()
 ) {
-    val uiState: FilterEditUIState by viewModel
-        .getFilterAsStateFlow(filterId)
-        .collectAsStateWithLifecycle()
+    val uiState: FilterEditUIState by viewModel.getFilterAsStateFlow(filterId).collectAsStateWithLifecycle()
 
     when(uiState) {
 

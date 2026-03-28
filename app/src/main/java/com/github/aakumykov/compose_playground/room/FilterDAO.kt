@@ -15,11 +15,11 @@ interface FilterDAO {
     @Query("SELECT * FROM filters ORDER BY modified ASC")
     fun list(): Flow<List<Filter>>
 
+    @Query("SELECT * FROM filters ORDER BY modified ASC LIMIT 1")
+    fun firstFilter(): Flow<Filter?>
+
     @Query("DELETE FROM filters")
     fun deleteAll()
-
-    @Query("SELECT * FROM filters WHERE id = :filterId")
-    fun getFilterAsFlow(filterId: String?): Flow<Filter?>
 
     @Query("SELECT * FROM filters WHERE id = :filterId")
     fun get(filterId: String?): Filter?
