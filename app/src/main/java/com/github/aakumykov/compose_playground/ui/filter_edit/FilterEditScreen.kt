@@ -6,19 +6,20 @@ import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.State
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
+import androidx.compose.runtime.produceState
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.github.aakumykov.compose_playground.R
+import com.github.aakumykov.compose_playground.exceptions.NoSuchFilterException
 import com.github.aakumykov.compose_playground.extensions.errorMsgExtended
 import com.github.aakumykov.compose_playground.model.Filter
 import com.github.aakumykov.compose_playground.ui.common.ErrorText
 import com.github.aakumykov.compose_playground.ui.common.LoadingThrobber
+import kotlinx.coroutines.flow.map
 
 @Composable
 fun FilterEditScreen(
@@ -28,7 +29,14 @@ fun FilterEditScreen(
     modifier: Modifier = Modifier,
     viewModel: FilterEditViewModel = hiltViewModel()
 ) {
-    val uiState: FilterEditUIState by viewModel.getUiStateFor(filterId).collectAsStateWithLifecycle()
+//    val uiState: FilterEditUIState by viewModel.getUiStateFor(filterId).collectAsStateWithLifecycle()
+//    val uiState: FilterEditUIState by remember { mutableStateOf(viewModel.getFilter(filterId)) }
+
+    /*val filterState: State<Filter?> by produceState(null) {
+        value = viewModel.getFilter(filterId)
+    }*/
+
+    val uiState: FilterEditUIState by viewModel.getFilterAsStateFlow(filterId).collectAsStateWithLifecycle()
 
     when(uiState) {
 

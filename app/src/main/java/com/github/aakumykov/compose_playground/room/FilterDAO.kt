@@ -20,4 +20,7 @@ interface FilterDAO {
 
     @Query("SELECT * FROM filters WHERE id = :filterId")
     fun getFilterAsFlow(filterId: String?): Flow<Filter?>
+
+    @Query("SELECT * FROM filters WHERE id = :filterId")
+    fun get(filterId: String?): Filter?
 }
