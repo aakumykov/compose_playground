@@ -34,10 +34,10 @@ fun MainNavigationNew() {
                 FilterEditScreen(
                     filterId = it.filterId,
                     onFilterSaved = {
-
+                        backStack.removeLastOrNull()
                     },
                     onCancelClicked = {
-
+                        backStack.removeLastOrNull()
                     },
                     modifier = Modifier.safeDrawingPadding().padding(16.dp)
                 )

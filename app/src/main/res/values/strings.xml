@@ -3,4 +3,9 @@
     <string name="description_filter_add_button">Добавить фильтр</string>
     <string name="button_save">Сохранить</string>
     <string name="button_cancel">Отменить</string>
+    <string name="filter_mode_black">Чёрный список</string>
+    <string name="filter_mode_white">Белый список</string>
+    <string name="label_filter_mode">Тип фильтрации</string>
+    <string name="label_filter_enabled_yes">Включен</string>
+    <string name="label_filter_enabled_no">Выключен</string>
 </resources>

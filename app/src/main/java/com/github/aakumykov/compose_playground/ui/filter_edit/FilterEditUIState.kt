@@ -9,11 +9,13 @@ sealed interface FilterEditUIState {
     data class Error(val throwable: Throwable): FilterEditUIState
 
     data class Success(
+        val id: String?,
         val packageName: String,
         val mode: FilterMode,
         val enabled: Boolean,
     ): FilterEditUIState {
         constructor(filter: Filter) : this(
+            id = filter.id,
             packageName = filter.packageName,
             mode = filter.mode,
             enabled = filter.enabled
