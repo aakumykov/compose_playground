@@ -32,7 +32,7 @@ fun MainNavigationNew() {
 
             entry<FilterEdit> {
                 FilterEditScreen(
-//                    filterId = it.filterId,
+                    filterId = it.filterId,
                     onFilterSaved = {
 
                     },

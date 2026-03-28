@@ -43,11 +43,8 @@ class FilterEditViewModel @Inject constructor(
         )*/
 
     @OptIn(ExperimentalCoroutinesApi::class)
-    fun getFilterAsStateFlow(): StateFlow<FilterEditUIState> {
-        val filterId = "4109435b-a748-45a6-99a9-f4d04de98e87"
-
-        return listOf(filterId)
-            .asFlow()
+    fun getFilterAsStateFlow(filterId: String?): StateFlow<FilterEditUIState> {
+        return flowOf(filterId)
             .map {
                 if (null != it) filterRepository.get(it)
                 else null

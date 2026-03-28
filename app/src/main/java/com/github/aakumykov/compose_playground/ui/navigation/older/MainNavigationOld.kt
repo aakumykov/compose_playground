@@ -47,7 +47,7 @@ fun MainNavigationOld(modifier: Modifier = Modifier) {
             )
         ) {
             FilterEditScreen(
-//                filterId = it.arguments?.getString(NavArguments.FILTER_ID),
+                filterId = it.arguments?.getString(NavArguments.FILTER_ID),
                 onFilterSaved = { navController.popBackStack() },
                 onCancelClicked = { navController.popBackStack() }
             )

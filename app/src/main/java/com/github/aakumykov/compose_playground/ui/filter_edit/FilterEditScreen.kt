@@ -24,14 +24,14 @@ import kotlinx.coroutines.flow.map
 
 @Composable
 fun FilterEditScreen(
-//    filterId: String?,
+    filterId: String?,
     onFilterSaved: () -> Unit,
     onCancelClicked: () -> Unit,
     modifier: Modifier = Modifier,
     viewModel: FilterEditViewModel = hiltViewModel()
 ) {
     val uiState: FilterEditUIState by viewModel
-        .getFilterAsStateFlow(/*filterId*/)
+        .getFilterAsStateFlow(filterId)
         .collectAsStateWithLifecycle()
 
     when(uiState) {
