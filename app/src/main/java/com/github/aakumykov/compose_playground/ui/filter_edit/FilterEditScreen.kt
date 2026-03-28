@@ -6,6 +6,7 @@ import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.State
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.produceState
@@ -23,20 +24,15 @@ import kotlinx.coroutines.flow.map
 
 @Composable
 fun FilterEditScreen(
-    filterId: String?,
+//    filterId: String?,
     onFilterSaved: () -> Unit,
     onCancelClicked: () -> Unit,
     modifier: Modifier = Modifier,
     viewModel: FilterEditViewModel = hiltViewModel()
 ) {
-//    val uiState: FilterEditUIState by viewModel.getUiStateFor(filterId).collectAsStateWithLifecycle()
-//    val uiState: FilterEditUIState by remember { mutableStateOf(viewModel.getFilter(filterId)) }
-
-    /*val filterState: State<Filter?> by produceState(null) {
-        value = viewModel.getFilter(filterId)
-    }*/
-
-    val uiState: FilterEditUIState by viewModel.getFilterAsStateFlow(filterId).collectAsStateWithLifecycle()
+    val uiState: FilterEditUIState by viewModel
+        .getFilterAsStateFlow(/*filterId*/)
+        .collectAsStateWithLifecycle()
 
     when(uiState) {
 

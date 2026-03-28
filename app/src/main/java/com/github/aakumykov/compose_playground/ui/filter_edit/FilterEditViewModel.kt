@@ -5,6 +5,7 @@ import androidx.lifecycle.viewModelScope
 import com.github.aakumykov.compose_playground.exceptions.NoSuchFilterException
 import com.github.aakumykov.compose_playground.model.Filter
 import com.github.aakumykov.compose_playground.repository.FilterRepository
+import com.github.aakumykov.compose_playground.ui.filter_list.FilterListUIState
 import dagger.hilt.android.lifecycle.HiltViewModel
 import jakarta.inject.Inject
 import kotlinx.coroutines.ExperimentalCoroutinesApi
@@ -12,6 +13,8 @@ import kotlinx.coroutines.async
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.asFlow
+import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.flatMapLatest
 import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.flow.map
@@ -25,50 +28,26 @@ class FilterEditViewModel @Inject constructor(
     private val filterRepository: FilterRepository
 ) : ViewModel() {
 
-    //
-    // С этим вариантом идёт жуткое зацикливание.
-    //
-    /*fun getUiStateFor(filterId: String?): StateFlow<FilterEditUIState> {
-        return flow {
-
-            filterRepository.get(filterId)?.let {
-                emit(FilterEditUIState.Success(it))
-            } ?: run {
-                emit(FilterEditUIState.Error(NoSuchFilterException(filterId)))
-            }
-
-        }.stateIn(
-            viewModelScope,
-            SharingStarted.WhileSubscribed(5000),
-            FilterEditUIState.Loading
-        )
-    }*/
-
-    //
-    // С этой хуйнёй так же. Будет интересней найти причину.
-    //
-    fun getUiStateFor(filterId: String?): StateFlow<FilterEditUIState> {
-        return filterRepository.getAsFlow(filterId).map {
-            if (null != it) FilterEditUIState.Success(it)
-            else FilterEditUIState.Error(NoSuchFilterException(filterId))
-        }.stateIn(
-            viewModelScope,
-            SharingStarted.WhileSubscribed(5000),
-            FilterEditUIState.Loading
-        )
+    init {
+        println()
     }
 
-    suspend fun getFilter(filterId: String?): FilterEditUIState {
-        return viewModelScope.async {
-            val filter = filterRepository.get(filterId)
-            if (null == filter) FilterEditUIState.Error(NoSuchFilterException(filterId))
-            else FilterEditUIState.Success(filter)
-        }.await()
-    }
+    /*val uiState: StateFlow<FilterListUIState> = filterRepository
+        .filters
+        .map<List<Filter>,FilterListUIState> { FilterListUIState.Success(it) }
+        .catch { emit(FilterListUIState.Error(it)) }
+        .stateIn(
+            viewModelScope,
+            SharingStarted.WhileSubscribed(5000),
+            FilterListUIState.Loading
+        )*/
 
     @OptIn(ExperimentalCoroutinesApi::class)
-    fun getFilterAsStateFlow(filterId: String?): StateFlow<FilterEditUIState> {
-        return flowOf(filterId)
+    fun getFilterAsStateFlow(): StateFlow<FilterEditUIState> {
+        val filterId = "4109435b-a748-45a6-99a9-f4d04de98e87"
+
+        return listOf(filterId)
+            .asFlow()
             .map {
                 if (null != it) filterRepository.get(it)
                 else null
@@ -77,7 +56,6 @@ class FilterEditViewModel @Inject constructor(
                 if (null != it) FilterEditUIState.Success(it)
                 else FilterEditUIState.Error(NoSuchFilterException(filterId))
             }
-            .map { it }
             .stateIn(
                 scope = viewModelScope,
                 started = SharingStarted.WhileSubscribed(5000),
