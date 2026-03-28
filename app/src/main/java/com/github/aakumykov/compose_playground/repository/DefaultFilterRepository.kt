@@ -22,6 +22,10 @@ class DefaultFilterRepository @Inject constructor(
         filterDAO.add(filter)
     }
 
+    override suspend fun update(filter: Filter) {
+        filterDAO.update(filter)
+    }
+
     override suspend fun removeAllFilters() = withContext(dispatcher) {
         filterDAO.deleteAll()
     }

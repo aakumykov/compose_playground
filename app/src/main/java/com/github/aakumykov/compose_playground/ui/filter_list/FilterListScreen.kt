@@ -2,13 +2,10 @@ package com.github.aakumykov.compose_playground.ui.filter_list
 
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
-import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.FloatingActionButtonDefaults
 import androidx.compose.material3.HorizontalDivider
@@ -34,6 +31,7 @@ import com.github.aakumykov.compose_playground.ui.common.LoadingThrobber
 @Composable
 fun FilterListScreen(
     onItemClicked: (filterId: String) -> Unit,
+    onAddClicked: () -> Unit,
     modifier: Modifier = Modifier,
     viewModel: FilterListViewModel = hiltViewModel(),
 ) {
@@ -44,7 +42,7 @@ fun FilterListScreen(
             FilterListScreen(
                 (uiState as FilterListUIState.Success).list,
                 onItemClicked = onItemClicked,
-                onAddClicked = { viewModel.addFilter(Filter.createRandom()) },
+                onAddClicked = onAddClicked,
                 onClearClicked = { viewModel.removeAllFilters() },
                 modifier = modifier
             )

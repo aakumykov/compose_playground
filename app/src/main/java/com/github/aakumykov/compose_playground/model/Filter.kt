@@ -3,6 +3,7 @@ package com.github.aakumykov.compose_playground.model
 import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.PrimaryKey
+import com.github.aakumykov.compose_playground.utils.currentTimestamp
 import com.github.aakumykov.compose_playground.utils.faker
 import com.github.aakumykov.compose_playground.utils.newRandomId
 import com.github.aakumykov.compose_playground.utils.randomBool
@@ -21,7 +22,8 @@ data class Filter(
     val enabled: Boolean,
 ) {
     companion object {
-        fun createRandom(): Filter = Filter(
+
+        val random get() = Filter(
             id = newRandomId,
             modified = Date().time,
             packageName = faker.app().name(),
@@ -29,14 +31,29 @@ data class Filter(
             enabled = randomBool
         )
 
+
         fun fakeList(size: Int = 5): List<Filter> = buildList {
             repeat(size) {
-                add(createRandom())
+                add(Companion.random)
             }
         }
 
-        fun fakeListFlow(size: Int = 5): Flow<List<Filter>>
-            = flow { emit(fakeList(size)) }
+
+        fun fakeListFlow(size: Int = 5): Flow<List<Filter>> = flow {
+            emit(fakeList(size))
+        }
+
+
+        fun create(packageName: String,
+                   mode: FilterMode,
+                   isEnabled: Boolean
+        ): Filter = Filter(
+            id = newRandomId,
+            packageName = packageName,
+            mode = mode,
+            enabled = isEnabled,
+            modified = currentTimestamp
+        )
     }
 }
 

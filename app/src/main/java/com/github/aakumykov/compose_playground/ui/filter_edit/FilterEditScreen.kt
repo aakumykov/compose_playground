@@ -8,15 +8,11 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Switch
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.State
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.produceState
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
@@ -28,14 +24,12 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.github.aakumykov.compose_playground.R
-import com.github.aakumykov.compose_playground.exceptions.NoSuchFilterException
 import com.github.aakumykov.compose_playground.extensions.errorMsgExtended
 import com.github.aakumykov.compose_playground.model.Filter
 import com.github.aakumykov.compose_playground.model.FilterMode
 import com.github.aakumykov.compose_playground.ui.common.DropDownMenu
 import com.github.aakumykov.compose_playground.ui.common.ErrorText
 import com.github.aakumykov.compose_playground.ui.common.LoadingThrobber
-import kotlinx.coroutines.flow.map
 
 @Composable
 fun FilterEditScreen(
@@ -49,11 +43,16 @@ fun FilterEditScreen(
 
     when(uiState) {
 
-        is FilterEditUIState.Success -> {
+        is FilterEditUIState.Normal -> {
             FilterEditForm(
-                state = uiState as FilterEditUIState.Success,
+                state = uiState as FilterEditUIState.Normal,
                 modifier = modifier,
-                onSaveClicked = onFilterSaved,
+                onSaveClicked = { filterMode: FilterMode, isEnabled: Boolean ->
+                    viewModel.saveFilter(
+                        (uiState as FilterEditUIState.Normal).packageName,
+                        filterMode,
+                        isEnabled)
+                },
                 onCancelClicked = onCancelClicked,
             )
         }
@@ -74,9 +73,9 @@ fun FilterEditScreen(
 
 @Composable
 fun FilterEditForm(
-    state: FilterEditUIState.Success,
+    state: FilterEditUIState.Normal,
     modifier: Modifier = Modifier,
-    onSaveClicked: () -> Unit,
+    onSaveClicked: (filterMode: FilterMode, enabled: Boolean) -> Unit,
     onCancelClicked: () -> Unit,
 ) {
     var filterMode: FilterMode by remember { mutableStateOf(state.mode) }
@@ -114,9 +113,13 @@ fun FilterEditForm(
             )
         }
 
-        Button(onClick = onSaveClicked, modifier = Modifier.fillMaxWidth()) {
-            Text(stringResource(R.string.button_save))
-        }
+        Button(
+            onClick = {
+                onSaveClicked.invoke(filterMode, enabled)
+            },
+            modifier = Modifier.fillMaxWidth()
+        ) { Text(stringResource(R.string.button_save)) }
+
         Button(
             onClick = onCancelClicked,
             colors = ButtonDefaults.buttonColors(
@@ -126,6 +129,10 @@ fun FilterEditForm(
         ) {
             Text(stringResource(R.string.button_cancel))
         }
+
+        state.errorMsg?.also {
+            ErrorText(it)
+        }
     }
 }
 
@@ -134,8 +141,8 @@ fun FilterEditForm(
 @Composable
 fun FilterEditScreenPreview() {
     FilterEditForm(
-        state = FilterEditUIState.Success(Filter.createRandom()),
-        onSaveClicked = {},
+        state = FilterEditUIState.Normal(Filter.random),
+        onSaveClicked = { mode: FilterMode, isEnabled: Boolean -> },
         onCancelClicked = {},
         modifier = Modifier.padding(top = 50.dp)
     )

@@ -1,4 +1,4 @@
-package com.github.aakumykov.compose_playground.ui.navigation.newer
+package com.github.aakumykov.compose_playground.ui.navigation
 
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.safeDrawingPadding
@@ -25,6 +25,9 @@ fun MainNavigationNew() {
                 FilterListScreen(
                     onItemClicked = { filterId ->
                         backStack.add(FilterEdit(filterId))
+                    },
+                    onAddClicked = {
+                        backStack.add(FilterEdit(null))
                     },
                     modifier = Modifier.safeDrawingPadding().padding(16.dp)
                 )

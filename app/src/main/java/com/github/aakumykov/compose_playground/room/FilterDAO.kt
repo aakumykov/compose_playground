@@ -3,6 +3,7 @@ package com.github.aakumykov.compose_playground.room
 import androidx.room.Dao
 import androidx.room.Insert
 import androidx.room.Query
+import androidx.room.Update
 import com.github.aakumykov.compose_playground.model.Filter
 import kotlinx.coroutines.flow.Flow
 
@@ -11,6 +12,9 @@ interface FilterDAO {
 
     @Insert
     fun add(filter: Filter)
+
+    @Update
+    fun update(filter: Filter)
 
     @Query("SELECT * FROM filters ORDER BY modified ASC")
     fun list(): Flow<List<Filter>>

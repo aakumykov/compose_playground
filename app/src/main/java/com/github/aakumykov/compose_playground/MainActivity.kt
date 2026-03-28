@@ -12,8 +12,7 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
-import com.github.aakumykov.compose_playground.ui.navigation.newer.MainNavigationNew
-import com.github.aakumykov.compose_playground.ui.navigation.older.MainNavigationOld
+import com.github.aakumykov.compose_playground.ui.navigation.MainNavigationNew
 import com.github.aakumykov.compose_playground.ui.theme.Compose_playgroundTheme
 import dagger.hilt.android.AndroidEntryPoint
 
