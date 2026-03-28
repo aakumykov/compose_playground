@@ -22,7 +22,7 @@ class DefaultFilterRepository @Inject constructor(
         filterDAO.add(filter)
     }
 
-    override suspend fun update(filter: Filter) {
+    override suspend fun update(filter: Filter) = withContext(dispatcher) {
         filterDAO.update(filter)
     }
 

@@ -11,47 +11,65 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Switch
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.github.aakumykov.compose_playground.R
 import com.github.aakumykov.compose_playground.extensions.errorMsgExtended
-import com.github.aakumykov.compose_playground.model.Filter
 import com.github.aakumykov.compose_playground.model.FilterMode
 import com.github.aakumykov.compose_playground.ui.common.DropDownMenu
 import com.github.aakumykov.compose_playground.ui.common.ErrorText
 import com.github.aakumykov.compose_playground.ui.common.LoadingThrobber
+import kotlinx.coroutines.launch
 
 @Composable
 fun FilterEditScreen(
     filterId: String?,
+    packageName: String?,
     onFilterSaved: () -> Unit,
     onCancelClicked: () -> Unit,
     modifier: Modifier = Modifier,
     viewModel: FilterEditViewModel = hiltViewModel()
 ) {
-    val uiState: FilterEditUIState by viewModel.getFilterAsStateFlow(filterId).collectAsStateWithLifecycle()
+    val uiState: FilterEditUIState by viewModel.uiState.collectAsStateWithLifecycle()
+
+    LaunchedEffect(Unit) {
+        if (null != filterId) viewModel.startWorkForEdit(filterId)
+        else if (null != packageName) viewModel.startWorkForCreate(packageName)
+        else viewModel.showError(IllegalArgumentException("You must supply filterId or packageName"))
+    }
+
+    LaunchedEffect(Unit) {
+        viewModel.isCompleteState.collect { isComplete ->
+            if (isComplete) {
+                onFilterSaved.invoke()
+            }
+        }
+    }
+
+    val scope = rememberCoroutineScope()
 
     when(uiState) {
 
-        is FilterEditUIState.Normal -> {
+        is FilterEditUIState.Edit -> {
             FilterEditForm(
-                state = uiState as FilterEditUIState.Normal,
+                state = uiState as FilterEditUIState.Edit,
                 modifier = modifier,
-                onSaveClicked = { filterMode: FilterMode, isEnabled: Boolean ->
-                    viewModel.saveFilter(
-                        (uiState as FilterEditUIState.Normal).packageName,
-                        filterMode,
-                        isEnabled)
+                onSaveClicked = { filterMode: FilterMode?, isEnabled: Boolean? ->
+                    scope.launch {
+                        viewModel.createOfUpdateFilter(filterMode, isEnabled)
+                    }
                 },
                 onCancelClicked = onCancelClicked,
             )
@@ -73,20 +91,22 @@ fun FilterEditScreen(
 
 @Composable
 fun FilterEditForm(
-    state: FilterEditUIState.Normal,
+    state: FilterEditUIState.Edit,
     modifier: Modifier = Modifier,
-    onSaveClicked: (filterMode: FilterMode, enabled: Boolean) -> Unit,
+    onSaveClicked: (filterMode: FilterMode?, enabled: Boolean) -> Unit,
     onCancelClicked: () -> Unit,
 ) {
-    var filterMode: FilterMode by remember { mutableStateOf(state.mode) }
-    var enabled : Boolean by remember { mutableStateOf(state.enabled) }
+    var filterMode: FilterMode? by remember { mutableStateOf(state.mode) }
+    var enabled : Boolean by rememberSaveable { mutableStateOf(state.enabled) }
 
     Column(modifier = modifier) {
 
         Text(
             text = state.packageName,
             textAlign = TextAlign.Center,
-            modifier = Modifier.fillMaxWidth().padding(12.dp)
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(12.dp)
         )
 
         DropDownMenu(
@@ -129,21 +149,19 @@ fun FilterEditForm(
         ) {
             Text(stringResource(R.string.button_cancel))
         }
-
-        state.errorMsg?.also {
-            ErrorText(it)
-        }
     }
 }
 
 
+/*
 @Preview(showSystemUi = true)
 @Composable
 fun FilterEditScreenPreview() {
     FilterEditForm(
-        state = FilterEditUIState.Normal(Filter.random),
+        state = FilterEditUIState.Edit(Filter.random),
         onSaveClicked = { mode: FilterMode, isEnabled: Boolean -> },
         onCancelClicked = {},
         modifier = Modifier.padding(top = 50.dp)
     )
 }
+*/

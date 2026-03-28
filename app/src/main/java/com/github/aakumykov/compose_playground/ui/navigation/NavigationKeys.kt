@@ -23,4 +23,12 @@ import kotlinx.serialization.Serializable
 data object FilterList : NavKey
 
 @Serializable
-data class FilterEdit(val filterId: String?) : NavKey
+data class FilterEdit(
+    val filterId: String?,
+    val packageName: String?
+): NavKey {
+    companion object {
+        fun byFilterId(filterId: String) = FilterEdit(filterId = filterId, packageName = null)
+        fun byPackageName(packageName: String) = FilterEdit(filterId = null, packageName = packageName)
+    }
+}

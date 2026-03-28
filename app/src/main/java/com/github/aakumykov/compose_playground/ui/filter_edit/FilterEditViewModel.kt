@@ -1,5 +1,7 @@
 package com.github.aakumykov.compose_playground.ui.filter_edit
 
+import androidx.compose.runtime.MutableState
+import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.github.aakumykov.compose_playground.exceptions.NoSuchFilterException
@@ -9,6 +11,7 @@ import com.github.aakumykov.compose_playground.repository.FilterRepository
 import com.github.aakumykov.compose_playground.utils.currentTimestamp
 import dagger.hilt.android.lifecycle.HiltViewModel
 import jakarta.inject.Inject
+import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.flow
@@ -20,73 +23,70 @@ class FilterEditViewModel @Inject constructor(
     private val filterRepository: FilterRepository
 ) : ViewModel() {
 
-    private var currentFilter: Filter? = null
-    private val cachedFilterState = mutableMapOf<String?, StateFlow<FilterEditUIState>>()
+    init {
+        println()
+    }
 
-    fun getFilterAsStateFlow(filterId: String?): StateFlow<FilterEditUIState> {
-        return cachedFilterState.getOrPut(filterId) {
-            flow {
-                val result = try {
-                    when (filterId) {
-                        null -> FilterEditUIState.Error(NoSuchFilterException(null))
-                        else -> filterRepository.get(filterId)
-                            ?.let {
-                                currentFilter = it
-                                FilterEditUIState.Normal(it)
-                            }
-                            ?: FilterEditUIState.Error(NoSuchFilterException(filterId))
-                    }
-                } catch (e: Exception) {
-                    FilterEditUIState.Error(e)
+    private val _uiState: MutableStateFlow<FilterEditUIState> = MutableStateFlow(FilterEditUIState.Loading)
+    val uiState: StateFlow<FilterEditUIState> = _uiState
+
+    private val _isCompleteState: MutableStateFlow<Boolean> = MutableStateFlow(false)
+    val isCompleteState: StateFlow<Boolean> = _isCompleteState
+
+    private var currentFilter: Filter? = null
+    private var currantPackageName: String? = null
+
+    suspend fun startWorkForCreate(packageName: String) {
+        currantPackageName = packageName
+        _uiState.emit(FilterEditUIState.Edit.asCreate(packageName))
+    }
+
+    suspend fun startWorkForEdit(filterId: String) {
+        filterRepository.get(filterId).also { filter: Filter? ->
+            _uiState.emit(
+                if (null != filter) {
+                    currentFilter = filter
+                    FilterEditUIState.Edit.asEdit(filter)
                 }
-                emit(result)
-            }.stateIn(
-                scope = viewModelScope,
-                started = SharingStarted.WhileSubscribed(5000),
-                initialValue = FilterEditUIState.Loading,
+                else FilterEditUIState.Error(NoSuchFilterException(filterId))
             )
         }
     }
 
-
-    fun saveFilter(packageName: String, filterMode: FilterMode, isEnabled: Boolean) {
-        viewModelScope.launch {
-            try {
-                if (null != currentFilter) updateFilter(currentFilter!!, filterMode, isEnabled)
-                else createFilter(packageName, filterMode, isEnabled)
-            } catch (t: Throwable) {
-
+    suspend fun createOfUpdateFilter(newFilterMode: FilterMode?, isEnabled: Boolean?) {
+        try {
+            if (null != currentFilter) {
+                filterRepository.update(
+                    Filter(
+                        id = currentFilter!!.id,
+                        packageName = currentFilter!!.packageName,
+                        mode = newFilterMode!!,
+                        enabled = isEnabled!!,
+                        modified = currentTimestamp
+                    )
+                )
+            } else {
+                filterRepository.add(
+                    Filter.create(
+                        packageName = currantPackageName!!,
+                        mode = newFilterMode!!,
+                        isEnabled = isEnabled!!
+                    )
+                )
             }
+
+            _isCompleteState.emit(true)
+        }
+        catch (t: Throwable) {
+            // TODO: отображать ошибку
         }
     }
 
-    private suspend fun updateFilter(
-        existingFilter: Filter,
-        filterMode: FilterMode,
-        enabled: Boolean
-    ) {
-        Filter(
-            id = existingFilter.id,
-            packageName = existingFilter.packageName,
-            mode = filterMode,
-            modified = currentTimestamp,
-            enabled = enabled
-        ).also {
-            filterRepository.update(it)
-        }
+    override fun onCleared() {
+        super.onCleared()
     }
 
-    private suspend fun createFilter(
-        packageName: String,
-        filterMode: FilterMode,
-        enabled: Boolean
-    ) {
-        Filter.create(
-            packageName = packageName,
-            mode = filterMode,
-            isEnabled = enabled
-        ).also {
-            filterRepository.add(it)
-        }
+    suspend fun showError(exception: Exception) {
+        _uiState.emit(FilterEditUIState.Error(exception))
     }
 }

@@ -10,6 +10,7 @@ import androidx.navigation3.runtime.rememberNavBackStack
 import androidx.navigation3.ui.NavDisplay
 import com.github.aakumykov.compose_playground.ui.filter_edit.FilterEditScreen
 import com.github.aakumykov.compose_playground.ui.filter_list.FilterListScreen
+import com.github.aakumykov.compose_playground.utils.randomString
 
 @Composable
 fun MainNavigationNew() {
@@ -24,10 +25,10 @@ fun MainNavigationNew() {
             entry<FilterList> {
                 FilterListScreen(
                     onItemClicked = { filterId ->
-                        backStack.add(FilterEdit(filterId))
+                        backStack.add(FilterEdit.byFilterId(filterId))
                     },
                     onAddClicked = {
-                        backStack.add(FilterEdit(null))
+                        backStack.add(FilterEdit.byPackageName(randomString))
                     },
                     modifier = Modifier.safeDrawingPadding().padding(16.dp)
                 )
@@ -36,6 +37,7 @@ fun MainNavigationNew() {
             entry<FilterEdit> {
                 FilterEditScreen(
                     filterId = it.filterId,
+                    packageName = it.packageName,
                     onFilterSaved = {
                         backStack.removeLastOrNull()
                     },
