@@ -40,7 +40,7 @@ fun FilterEditScreen(
     onFilterSaved: () -> Unit,
     onCancelClicked: () -> Unit,
     modifier: Modifier = Modifier,
-    viewModel: FilterEditViewModel = hiltViewModel()
+    viewModel: FilterEditViewModel
 ) {
     val uiState: FilterEditUIState by viewModel.uiState.collectAsStateWithLifecycle()
 
