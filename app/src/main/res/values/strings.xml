@@ -12,4 +12,13 @@
     <string name="button_delete">Удалить</string>
     <string name="description_filter_list_item_mode_icon_black">Режим чёрного списка</string>
     <string name="description_filter_list_item_mode_icon_white">Режим белого списка</string>
+    <string name="rule_operation_name_starts_with">Начинается с</string>
+    <string name="rule_operation_name_ends_with">Заканчивается на</string>
+    <string name="rule_operation_name_contains">Содержит</string>
+    <string name="rule_operation_name_equals">Совпадает с</string>
+    <string name="rule_operation_name_regexp">Регулярное выражение</string>
+    <string name="rule_subject_name_title">Заголовок</string>
+    <string name="rule_subject_name_message">Тело сообщения</string>
+    <string name="rule_subject_name_any">Заголовок ИЛИ тело</string>
+    <string name="rule_subject_name_both">Заголовок И тело</string>
 </resources>
