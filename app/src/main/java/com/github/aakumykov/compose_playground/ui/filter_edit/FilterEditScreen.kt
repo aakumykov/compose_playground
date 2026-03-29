@@ -1,12 +1,18 @@
 package com.github.aakumykov.compose_playground.ui.filter_edit
 
+import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.windowInsetsEndWidth
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.items
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.FloatingActionButton
@@ -24,6 +30,7 @@ import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
@@ -36,6 +43,7 @@ import com.github.aakumykov.compose_playground.R
 import com.github.aakumykov.compose_playground.extensions.errorMsgExtended
 import com.github.aakumykov.compose_playground.extensions.showToast
 import com.github.aakumykov.compose_playground.model.FilterMode
+import com.github.aakumykov.compose_playground.model.Rule
 import com.github.aakumykov.compose_playground.ui.common.DropDownMenu
 import com.github.aakumykov.compose_playground.ui.common.ErrorText
 import com.github.aakumykov.compose_playground.ui.common.LoadingThrobber
@@ -55,6 +63,7 @@ fun FilterEditScreen(
 ) {
     val uiState: FilterEditUIState by viewModel.uiState.collectAsStateWithLifecycle()
     val errorMessage: String? by viewModel.errorMessage.collectAsStateWithLifecycle()
+    var rules: List<Rule> by remember { mutableStateOf(emptyList()) }
 
     LaunchedEffect(Unit) {
         if (null != filterId) viewModel.startWorkForEdit(filterId)
@@ -70,6 +79,12 @@ fun FilterEditScreen(
         }
     }
 
+    LaunchedEffect(Unit) {
+        viewModel.rules.collect {
+            rules = it
+        }
+    }
+
     val scope = rememberCoroutineScope()
     val context = LocalContext.current
 
@@ -78,6 +93,7 @@ fun FilterEditScreen(
         is FilterEditUIState.Edit -> {
             FilterEditForm(
                 state = uiState as FilterEditUIState.Edit,
+                rules = rules,
                 errorMessage = errorMessage,
                 modifier = modifier,
                 onAddRuleClicked = {
@@ -115,6 +131,7 @@ fun FilterEditScreen(
 @Composable
 fun FilterEditForm(
     state: FilterEditUIState.Edit,
+    rules: List<Rule>,
     errorMessage: String?,
     modifier: Modifier = Modifier,
     onAddRuleClicked: () -> Unit,
@@ -169,18 +186,30 @@ fun FilterEditForm(
                 modifier = Modifier.align(Alignment.CenterHorizontally))
         }
 
-        Spacer(modifier = Modifier.weight(1f))
-
-        FloatingActionButton(
-            onClick = onAddRuleClicked,
-            modifier = Modifier.align(Alignment.CenterHorizontally)
-                .padding(20.dp)
+        Box(modifier = Modifier
+            .fillMaxWidth()
+            .background(Color(0xFFE5E5F1))
+            .weight(1f, true)
         ) {
-            Icon (
-                painter = painterResource(R.drawable.baseline_add_24),
-                contentDescription = stringResource(R.string.description_filter_add_button)
-            )
+            LazyColumn(modifier = Modifier.fillMaxWidth()) {
+                items(items = rules, key = { it.id }) {
+                    Text(it.id)
+                }
+            }
+
+            FloatingActionButton(
+                onClick = onAddRuleClicked,
+                modifier = Modifier.align(Alignment.BottomEnd)
+                    .padding(20.dp)
+            ) {
+                Icon (
+                    painter = painterResource(R.drawable.baseline_add_24),
+                    contentDescription = stringResource(R.string.description_filter_add_button)
+                )
+            }
         }
+
+//        Spacer(modifier = Modifier.weight(1f))
 
         Button(
             onClick = {
@@ -221,6 +250,7 @@ fun FilterEditForm(
 fun FilterEditScreenPreview() {
     FilterEditForm(
         state = FilterEditUIState.Edit.asCreate("packageName"),
+        rules = emptyList(),
         onAddRuleClicked = {},
         onSaveClicked = { _: FilterMode?, _: Boolean -> },
         onCancelClicked = {},

@@ -2,26 +2,35 @@ package com.github.aakumykov.compose_playground.ui.filter_edit
 
 import android.util.Log
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import com.github.aakumykov.compose_playground.exceptions.NoSuchFilterException
 import com.github.aakumykov.compose_playground.extensions.errorMsg
 import com.github.aakumykov.compose_playground.extensions.errorMsgExtended
 import com.github.aakumykov.compose_playground.model.FilterMetadata
 import com.github.aakumykov.compose_playground.model.FilterMode
 import com.github.aakumykov.compose_playground.model.Filter
+import com.github.aakumykov.compose_playground.model.Rule
 import com.github.aakumykov.compose_playground.repository.FilterRepository
+import com.github.aakumykov.compose_playground.repository.RuleRepository
 import com.github.aakumykov.compose_playground.utils.currentTimestamp
 import dagger.hilt.android.lifecycle.HiltViewModel
 import jakarta.inject.Inject
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.collect
+import kotlinx.coroutines.launch
 
 @HiltViewModel
 class FilterEditViewModel @Inject constructor(
-    private val filterRepository: FilterRepository
+    private val filterRepository: FilterRepository,
+    private val ruleRepository: RuleRepository
 ) : ViewModel() {
 
     private val _uiState: MutableStateFlow<FilterEditUIState> = MutableStateFlow(FilterEditUIState.Loading)
     val uiState: StateFlow<FilterEditUIState> = _uiState
+
+    private val _rules: MutableStateFlow<List<Rule>> = MutableStateFlow(emptyList())
+    val rules: StateFlow<List<Rule>> = _rules
 
     private val _isCompleteState: MutableStateFlow<Boolean> = MutableStateFlow(false)
     val isCompleteState: StateFlow<Boolean> = _isCompleteState
@@ -46,6 +55,12 @@ class FilterEditViewModel @Inject constructor(
                 }
                 else FilterEditUIState.Error(NoSuchFilterException(filterId))
             )
+        }
+
+        viewModelScope.launch {
+            ruleRepository.listAsFlow(filterId).collect {
+                _rules.emit(it)
+            }
         }
     }
 

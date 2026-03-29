@@ -6,6 +6,7 @@ import androidx.room.Insert
 import androidx.room.Query
 import androidx.room.Update
 import com.github.aakumykov.compose_playground.model.Rule
+import kotlinx.coroutines.flow.Flow
 
 @Dao
 interface RuleDAO {
@@ -23,5 +24,5 @@ interface RuleDAO {
     @Query("SELECT * FROM ${Rule.TABLE_NAME} " +
             "WHERE filter_id = :filterId " +
             "ORDER BY created ASC")
-    fun list(filterId: String): List<Rule>
+    fun listAsFlow(filterId: String): Flow<List<Rule>>
 }

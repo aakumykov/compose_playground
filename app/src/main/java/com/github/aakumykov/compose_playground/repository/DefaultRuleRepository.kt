@@ -4,6 +4,7 @@ import com.github.aakumykov.compose_playground.model.Rule
 import com.github.aakumykov.compose_playground.repository.di.DispatcherType
 import com.github.aakumykov.compose_playground.room.di.RuleDAO
 import kotlinx.coroutines.CoroutineDispatcher
+import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.withContext
 import javax.inject.Inject
 import javax.inject.Named
@@ -22,8 +23,8 @@ class DefaultRuleRepository @Inject constructor(
         ruleDAO.update(rule)
     }
 
-    override suspend fun list(filterId: String): List<Rule> = withContext(dispatcher) {
-        ruleDAO.list(filterId)
+    override fun listAsFlow(filterId: String): Flow<List<Rule>> {
+        return ruleDAO.listAsFlow(filterId)
     }
 
     override suspend fun get(id: String): Rule? = withContext(dispatcher) {
