@@ -46,6 +46,7 @@ fun FilterEditScreen(
     viewModel: FilterEditViewModel
 ) {
     val uiState: FilterEditUIState by viewModel.uiState.collectAsStateWithLifecycle()
+    val errorMessage: String? by viewModel.errorMessage.collectAsStateWithLifecycle()
 
     LaunchedEffect(Unit) {
         if (null != filterId) viewModel.startWorkForEdit(filterId)
@@ -68,6 +69,7 @@ fun FilterEditScreen(
         is FilterEditUIState.Edit -> {
             FilterEditForm(
                 state = uiState as FilterEditUIState.Edit,
+                errorMessage = errorMessage,
                 modifier = modifier,
                 onSaveClicked = { filterMode: FilterMode?, isEnabled: Boolean? ->
                     scope.launch {
@@ -100,6 +102,7 @@ fun FilterEditScreen(
 @Composable
 fun FilterEditForm(
     state: FilterEditUIState.Edit,
+    errorMessage: String?,
     modifier: Modifier = Modifier,
     onSaveClicked: (filterMode: FilterMode?, enabled: Boolean) -> Unit,
     onCancelClicked: () -> Unit,
@@ -158,6 +161,11 @@ fun FilterEditForm(
             modifier = Modifier.fillMaxWidth()
         ) {
             Text(stringResource(R.string.button_cancel))
+        }
+
+        if (null != errorMessage) {
+            ErrorText(errorMessage,
+                modifier = Modifier.align(Alignment.CenterHorizontally))
         }
 
         if (null != state.id) {
