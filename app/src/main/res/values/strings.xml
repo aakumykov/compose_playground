@@ -21,4 +21,7 @@
     <string name="rule_subject_name_message">Тело сообщения</string>
     <string name="rule_subject_name_any">Заголовок ИЛИ тело</string>
     <string name="rule_subject_name_both">Заголовок И тело</string>
+    <string name="label_rule_subject">Объект</string>
+    <string name="label_rule_operation">Операция</string>
+    <string name="label_rule_check_pattern">Паттерн проверки</string>
 </resources>

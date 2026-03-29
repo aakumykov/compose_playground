@@ -11,10 +11,10 @@ import androidx.navigation3.runtime.entryProvider
 import androidx.navigation3.runtime.rememberNavBackStack
 import androidx.navigation3.runtime.rememberSaveableStateHolderNavEntryDecorator
 import androidx.navigation3.ui.NavDisplay
+import com.github.aakumykov.compose_playground.ui.RuleEditScreen
 import com.github.aakumykov.compose_playground.ui.filter_edit.FilterEditScreen
 import com.github.aakumykov.compose_playground.ui.filter_list.FilterListScreen
 import com.github.aakumykov.compose_playground.utils.randomString
-import java.util.Map.entry
 
 @Composable
 fun MainNavigationNew() {
@@ -52,6 +52,17 @@ fun MainNavigationNew() {
                     onCancelClicked = {
                         backStack.removeLastOrNull()
                     },
+                    modifier = Modifier.safeDrawingPadding().padding(16.dp),
+                    viewModel = hiltViewModel()
+                )
+            }
+
+            entry<RuleEdit> {
+                RuleEditScreen(
+                    ruleId = it.ruleId,
+                    filterId = it.filterId,
+                    onRuleSaved = { backStack.removeLastOrNull() },
+                    onCancelClicked = { backStack.removeLastOrNull() },
                     modifier = Modifier.safeDrawingPadding().padding(16.dp),
                     viewModel = hiltViewModel()
                 )

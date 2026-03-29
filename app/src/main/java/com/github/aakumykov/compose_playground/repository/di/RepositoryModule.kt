@@ -1,7 +1,9 @@
 package com.github.aakumykov.compose_playground.repository.di
 
 import com.github.aakumykov.compose_playground.repository.DefaultFilterRepository
+import com.github.aakumykov.compose_playground.repository.DefaultRuleRepository
 import com.github.aakumykov.compose_playground.repository.FilterRepository
+import com.github.aakumykov.compose_playground.repository.RuleRepository
 import dagger.Binds
 import dagger.Module
 import dagger.hilt.InstallIn
@@ -17,4 +19,10 @@ interface RepositoryModule {
     fun bindsFilterRepository(
         defaultFilterRepository: DefaultFilterRepository
     ): FilterRepository
+
+    @Binds
+    @Singleton
+    fun bindsRuleRepository(
+        defaultRuleRepository: DefaultRuleRepository
+    ): RuleRepository
 }

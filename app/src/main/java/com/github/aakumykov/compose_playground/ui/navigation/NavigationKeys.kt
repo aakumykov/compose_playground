@@ -32,3 +32,15 @@ data class FilterEdit(
         fun byPackageName(packageName: String) = FilterEdit(filterId = null, packageName = packageName)
     }
 }
+
+@ConsistentCopyVisibility
+@Serializable
+data class RuleEdit private constructor(
+    val filterId: String,
+    val ruleId: String?
+): NavKey {
+    companion object {
+        fun forCreate(filterId: String): RuleEdit = RuleEdit(filterId = filterId, ruleId = null)
+        fun forEdit(ruleId: String, filterId: String): RuleEdit = RuleEdit(filterId = filterId, ruleId = ruleId)
+    }
+}

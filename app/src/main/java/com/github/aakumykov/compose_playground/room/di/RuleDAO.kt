@@ -17,10 +17,11 @@ interface RuleDAO {
     fun update(rule: Rule)
 
     @Query("SELECT * FROM ${Rule.TABLE_NAME} " +
+            "WHERE id = :id")
+    fun get(id: String): Rule?
+
+    @Query("SELECT * FROM ${Rule.TABLE_NAME} " +
             "WHERE filter_id = :filterId " +
             "ORDER BY created ASC")
     fun list(filterId: String): List<Rule>
-
-    @Delete
-    fun delete(id: String)
 }
