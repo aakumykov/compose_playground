@@ -15,12 +15,20 @@ import java.util.Date
     tableName = "filters"
 )
 data class Filter(
-    @PrimaryKey val id: String,
-    @ColumnInfo(name = "package_name") val packageName: String,
-    val mode: FilterMode,
-    val modified: Long,
-    val enabled: Boolean,
-) {
+    @PrimaryKey
+    override val id: String,
+
+    @ColumnInfo(name = "package_name")
+    override val packageName: String,
+
+    override val mode: FilterMode,
+
+    override val modified: Long,
+
+    override val enabled: Boolean,
+)
+    : TheFilter
+{
     companion object {
 
         val random get() = Filter(

@@ -1,6 +1,7 @@
 package com.github.aakumykov.compose_playground.repository
 
 import com.github.aakumykov.compose_playground.model.Filter
+import com.github.aakumykov.compose_playground.model.SomeFilter
 import com.github.aakumykov.compose_playground.repository.di.DispatcherType
 import com.github.aakumykov.compose_playground.room.FilterDAO
 import kotlinx.coroutines.CoroutineDispatcher
@@ -16,21 +17,21 @@ class DefaultFilterRepository @Inject constructor(
     private val filterDAO: FilterDAO
 ): FilterRepository {
 
-    override val filters: Flow<List<Filter>> = filterDAO.list()
+    override val filters: Flow<List<SomeFilter>> = filterDAO.list()
 
-    override suspend fun add(filter: Filter) = withContext(dispatcher) {
-        filterDAO.add(filter)
+    override suspend fun add(filter: SomeFilter) = withContext(dispatcher) {
+        filterDAO.add(filter.filter)
     }
 
-    override suspend fun update(filter: Filter) = withContext(dispatcher) {
-        filterDAO.update(filter)
+    override suspend fun update(filter: SomeFilter) = withContext(dispatcher) {
+        filterDAO.update(filter.filter)
     }
 
     override suspend fun removeAllFilters() = withContext(dispatcher) {
         filterDAO.deleteAll()
     }
 
-    override suspend fun get(filterId: String?): Filter? = withContext(dispatcher) {
+    override suspend fun get(filterId: String?): SomeFilter? = withContext(dispatcher) {
         filterDAO.get(filterId)
     }
 

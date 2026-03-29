@@ -35,6 +35,7 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.github.aakumykov.compose_playground.R
 import com.github.aakumykov.compose_playground.extensions.errorMsgExtended
 import com.github.aakumykov.compose_playground.model.Filter
+import com.github.aakumykov.compose_playground.model.SomeFilter
 import com.github.aakumykov.compose_playground.model.isBlack
 import com.github.aakumykov.compose_playground.ui.common.ErrorText
 import com.github.aakumykov.compose_playground.ui.common.LoadingThrobber
@@ -76,7 +77,7 @@ fun FilterListScreen(
 
 @Composable
 fun FilterList(
-    list: List<Filter>,
+    list: List<SomeFilter>,
     onItemClicked: (filterId: String) -> Unit,
     onAddClicked: () -> Unit,
     onClearClicked: () -> Unit,
@@ -113,7 +114,7 @@ fun FilterList(
 
 @Composable
 fun FilterListItem(
-    filter: Filter,
+    filter: SomeFilter,
     onItemClicked: (filterId: String) -> Unit,
     modifier: Modifier = Modifier
 ) {
@@ -123,10 +124,10 @@ fun FilterListItem(
         modifier = modifier.fillMaxWidth()
     ) {
         Icon(
-            imageVector = if (filter.isBlack) Icons.Default.Circle
+            imageVector = if (filter.filter.isBlack) Icons.Default.Circle
             else Icons.Outlined.Circle,
             contentDescription = stringResource(
-                if (filter.isBlack) R.string.description_filter_list_item_mode_icon_black
+                if (filter.filter.isBlack) R.string.description_filter_list_item_mode_icon_black
                 else R.string.description_filter_list_item_mode_icon_white
             )
         )
