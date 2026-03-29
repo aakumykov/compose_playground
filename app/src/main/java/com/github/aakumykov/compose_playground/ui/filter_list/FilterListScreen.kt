@@ -7,15 +7,19 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.visible
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Check
+import androidx.compose.material.icons.filled.Circle
+import androidx.compose.material.icons.outlined.Circle
 import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.FloatingActionButtonDefaults
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
+import androidx.compose.material3.rememberContainedSearchBarState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
@@ -29,8 +33,9 @@ import androidx.compose.ui.unit.sp
 import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.github.aakumykov.compose_playground.R
-import com.github.aakumykov.compose_playground.model.Filter
 import com.github.aakumykov.compose_playground.extensions.errorMsgExtended
+import com.github.aakumykov.compose_playground.model.Filter
+import com.github.aakumykov.compose_playground.model.isBlack
 import com.github.aakumykov.compose_playground.ui.common.ErrorText
 import com.github.aakumykov.compose_playground.ui.common.LoadingThrobber
 
@@ -117,27 +122,37 @@ fun FilterListItem(
         horizontalArrangement = Arrangement.SpaceBetween,
         modifier = modifier.fillMaxWidth()
     ) {
+        Icon(
+            imageVector = if (filter.isBlack) Icons.Default.Circle
+            else Icons.Outlined.Circle,
+            contentDescription = stringResource(
+                if (filter.isBlack) R.string.description_filter_list_item_mode_icon_black
+                else R.string.description_filter_list_item_mode_icon_white
+            )
+        )
         Text(
             text = filter.packageName,
             fontSize = 18.sp,
             modifier = Modifier
                 .weight(1.0f, true)
-                .background(Color.Cyan)
+//                .background(Color.Cyan)
                 .padding(
-                    horizontal = 16.dp,
-                    vertical = 16.dp
+                    start = 14.dp,
+                    end = 0.dp,
+                    top = 16.dp,
+                    bottom = 16.dp
                 )
                 .clickable {
                     onItemClicked.invoke(filter.id)
                 }
         )
-        if (filter.enabled) {
-            Icon(
-                Icons.Default.Check,
-                contentDescription = stringResource(R.string.description_filter_list_item_enabled),
-                modifier = Modifier.background(Color.LightGray)
-            )
-        }
+        Icon(
+            Icons.Default.Check,
+            contentDescription = stringResource(R.string.description_filter_list_item_enabled),
+            modifier = Modifier
+//                .background(Color.LightGray)
+                .visible(filter.enabled)
+        )
     }
 }
 

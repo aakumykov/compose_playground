@@ -10,4 +10,6 @@
     <string name="label_filter_enabled_no">Выключен</string>
     <string name="description_filter_list_item_enabled">Фильтр активен</string>
     <string name="button_delete">Удалить</string>
+    <string name="description_filter_list_item_mode_icon_black">Режим чёрного списка</string>
+    <string name="description_filter_list_item_mode_icon_white">Режим белого списка</string>
 </resources>

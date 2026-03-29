@@ -57,3 +57,4 @@ data class Filter(
     }
 }
 
+val Filter.isBlack: Boolean get() = FilterMode.BLACK == mode
