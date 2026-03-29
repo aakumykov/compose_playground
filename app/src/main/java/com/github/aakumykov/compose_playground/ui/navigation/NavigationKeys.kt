@@ -20,27 +20,27 @@ import androidx.navigation3.runtime.NavKey
 import kotlinx.serialization.Serializable
 
 @Serializable
-data object FilterList : NavKey
+data object FilterListTarget : NavKey
 
 @Serializable
-data class FilterEdit(
+data class FilterEditTarget(
     val filterId: String?,
     val packageName: String?
 ): NavKey {
     companion object {
-        fun byFilterId(filterId: String) = FilterEdit(filterId = filterId, packageName = null)
-        fun byPackageName(packageName: String) = FilterEdit(filterId = null, packageName = packageName)
+        fun byFilterId(filterId: String) = FilterEditTarget(filterId = filterId, packageName = null)
+        fun byPackageName(packageName: String) = FilterEditTarget(filterId = null, packageName = packageName)
     }
 }
 
 @ConsistentCopyVisibility
 @Serializable
-data class RuleEdit private constructor(
+data class RuleEditTarget private constructor(
     val filterId: String,
     val ruleId: String?
 ): NavKey {
     companion object {
-        fun forCreate(filterId: String): RuleEdit = RuleEdit(filterId = filterId, ruleId = null)
-        fun forEdit(ruleId: String, filterId: String): RuleEdit = RuleEdit(filterId = filterId, ruleId = ruleId)
+        fun forCreate(filterId: String): RuleEditTarget = RuleEditTarget(filterId = filterId, ruleId = null)
+        fun forEdit(ruleId: String, filterId: String): RuleEditTarget = RuleEditTarget(filterId = filterId, ruleId = ruleId)
     }
 }

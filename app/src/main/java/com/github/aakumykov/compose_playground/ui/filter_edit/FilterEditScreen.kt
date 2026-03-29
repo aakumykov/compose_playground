@@ -9,6 +9,8 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
+import androidx.compose.material3.FloatingActionButton
+import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Switch
 import androidx.compose.material3.Text
@@ -22,14 +24,17 @@ import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight.Companion.Bold
 import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.github.aakumykov.compose_playground.R
 import com.github.aakumykov.compose_playground.extensions.errorMsgExtended
+import com.github.aakumykov.compose_playground.extensions.showToast
 import com.github.aakumykov.compose_playground.model.FilterMode
 import com.github.aakumykov.compose_playground.ui.common.DropDownMenu
 import com.github.aakumykov.compose_playground.ui.common.ErrorText
@@ -41,6 +46,8 @@ import kotlinx.coroutines.launch
 fun FilterEditScreen(
     filterId: String?,
     packageName: String?,
+    onAddRuleClicked: (filterId: String) -> Unit,
+    onRuleClicked: (ruleId: String, filterId: String) -> Unit,
     onFilterSaved: () -> Unit,
     onCancelClicked: () -> Unit,
     modifier: Modifier = Modifier,
@@ -64,6 +71,7 @@ fun FilterEditScreen(
     }
 
     val scope = rememberCoroutineScope()
+    val context = LocalContext.current
 
     when(uiState) {
 
@@ -72,6 +80,10 @@ fun FilterEditScreen(
                 state = uiState as FilterEditUIState.Edit,
                 errorMessage = errorMessage,
                 modifier = modifier,
+                onAddRuleClicked = {
+                    if (null != filterId) onAddRuleClicked.invoke(filterId)
+                    else context.showToast("filterId is null")
+                },
                 onSaveClicked = { filterMode: FilterMode?, isEnabled: Boolean? ->
                     scope.launch {
                         viewModel.createOfUpdateFilter(filterMode, isEnabled)
@@ -105,6 +117,7 @@ fun FilterEditForm(
     state: FilterEditUIState.Edit,
     errorMessage: String?,
     modifier: Modifier = Modifier,
+    onAddRuleClicked: () -> Unit,
     onSaveClicked: (filterMode: FilterMode?, enabled: Boolean) -> Unit,
     onCancelClicked: () -> Unit,
     onDeleteClicked: (filterId: String) -> Unit,
@@ -158,6 +171,17 @@ fun FilterEditForm(
 
         Spacer(modifier = Modifier.weight(1f))
 
+        FloatingActionButton(
+            onClick = onAddRuleClicked,
+            modifier = Modifier.align(Alignment.CenterHorizontally)
+                .padding(20.dp)
+        ) {
+            Icon (
+                painter = painterResource(R.drawable.baseline_add_24),
+                contentDescription = stringResource(R.string.description_filter_add_button)
+            )
+        }
+
         Button(
             onClick = {
                 onSaveClicked.invoke(filterMode, enabled)
@@ -190,15 +214,17 @@ fun FilterEditForm(
 }
 
 
-/*
-@Preview(showSystemUi = true)
+
+@Preview(showSystemUi = true,
+    device = "spec:width=400dp,height=750dp,dpi=240")
 @Composable
 fun FilterEditScreenPreview() {
     FilterEditForm(
-        state = FilterEditUIState.Edit(FilterMetadata.random),
-        onSaveClicked = { mode: FilterMode, isEnabled: Boolean -> },
+        state = FilterEditUIState.Edit.asCreate("packageName"),
+        onAddRuleClicked = {},
+        onSaveClicked = { _: FilterMode?, _: Boolean -> },
         onCancelClicked = {},
-        modifier = Modifier.padding(top = 50.dp)
+        onDeleteClicked = { _ -> },
+        errorMessage = null
     )
 }
-*/

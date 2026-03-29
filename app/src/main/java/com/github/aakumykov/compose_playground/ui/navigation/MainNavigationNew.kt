@@ -19,7 +19,7 @@ import com.github.aakumykov.compose_playground.utils.randomString
 @Composable
 fun MainNavigationNew() {
 
-    val backStack = rememberNavBackStack(FilterList)
+    val backStack = rememberNavBackStack(FilterListTarget)
 
     NavDisplay(
         backStack = backStack,
@@ -30,22 +30,28 @@ fun MainNavigationNew() {
         ),
         entryProvider = entryProvider {
 
-            entry<FilterList> {
+            entry<FilterListTarget> {
                 FilterListScreen(
                     onItemClicked = { filterId ->
-                        backStack.add(FilterEdit.byFilterId(filterId))
+                        backStack.add(FilterEditTarget.byFilterId(filterId))
                     },
                     onAddClicked = {
-                        backStack.add(FilterEdit.byPackageName(randomString))
+                        backStack.add(FilterEditTarget.byPackageName(randomString))
                     },
                     modifier = Modifier.safeDrawingPadding().padding(16.dp)
                 )
             }
 
-            entry<FilterEdit> {
+            entry<FilterEditTarget> {
                 FilterEditScreen(
                     filterId = it.filterId,
                     packageName = it.packageName,
+                    onAddRuleClicked = { filterId: String ->
+                        backStack.add(RuleEditTarget.forCreate(filterId))
+                    },
+                    onRuleClicked = { ruleId: String, filterId: String ->
+                        backStack.add(RuleEditTarget.forEdit(ruleId,filterId))
+                    },
                     onFilterSaved = {
                         backStack.removeLastOrNull()
                     },
@@ -57,7 +63,7 @@ fun MainNavigationNew() {
                 )
             }
 
-            entry<RuleEdit> {
+            entry<RuleEditTarget> {
                 RuleEditScreen(
                     ruleId = it.ruleId,
                     filterId = it.filterId,
