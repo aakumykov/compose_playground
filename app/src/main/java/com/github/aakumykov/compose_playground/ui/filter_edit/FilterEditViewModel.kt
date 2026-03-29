@@ -49,11 +49,14 @@ class FilterEditViewModel @Inject constructor(
         }
     }
 
-    suspend fun createOfUpdateFilter(newFilterMode: FilterMode?, isEnabled: Boolean?) {
+    suspend fun createOfUpdateFilter(
+        newFilterMode: FilterMode?,
+        isEnabled: Boolean?
+    ) {
         try {
             if (null != mCurrentFilterMetadata) {
                 filterRepository.update(
-                    Filter.fromFilter(FilterMetadata(
+                    Filter.create(FilterMetadata(
                         id = mCurrentFilterMetadata!!.id,
                         packageName = mCurrentFilterMetadata!!.packageName,
                         mode = newFilterMode!!,
@@ -63,7 +66,7 @@ class FilterEditViewModel @Inject constructor(
                 )
             } else {
                 filterRepository.add(
-                    Filter.fromFilter(FilterMetadata.create(
+                    Filter.create(FilterMetadata.create(
                         packageName = currantPackageName!!,
                         mode = newFilterMode!!,
                         isEnabled = isEnabled!!
