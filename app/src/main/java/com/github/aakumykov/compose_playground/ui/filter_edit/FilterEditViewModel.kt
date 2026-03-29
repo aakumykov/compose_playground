@@ -7,7 +7,7 @@ import com.github.aakumykov.compose_playground.extensions.errorMsg
 import com.github.aakumykov.compose_playground.extensions.errorMsgExtended
 import com.github.aakumykov.compose_playground.model.FilterMetadata
 import com.github.aakumykov.compose_playground.model.FilterMode
-import com.github.aakumykov.compose_playground.model.SomeFilter
+import com.github.aakumykov.compose_playground.model.Filter
 import com.github.aakumykov.compose_playground.repository.FilterRepository
 import com.github.aakumykov.compose_playground.utils.currentTimestamp
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -38,7 +38,7 @@ class FilterEditViewModel @Inject constructor(
     }
 
     suspend fun startWorkForEdit(filterId: String) {
-        filterRepository.get(filterId).also { filter: SomeFilter? ->
+        filterRepository.get(filterId).also { filter: Filter? ->
             _uiState.emit(
                 if (null != filter) {
                     mCurrentFilterMetadata = filter.filterMetadata
@@ -53,7 +53,7 @@ class FilterEditViewModel @Inject constructor(
         try {
             if (null != mCurrentFilterMetadata) {
                 filterRepository.update(
-                    SomeFilter.fromFilter(FilterMetadata(
+                    Filter.fromFilter(FilterMetadata(
                         id = mCurrentFilterMetadata!!.id,
                         packageName = mCurrentFilterMetadata!!.packageName,
                         mode = newFilterMode!!,
@@ -63,7 +63,7 @@ class FilterEditViewModel @Inject constructor(
                 )
             } else {
                 filterRepository.add(
-                    SomeFilter.fromFilter(FilterMetadata.create(
+                    Filter.fromFilter(FilterMetadata.create(
                         packageName = currantPackageName!!,
                         mode = newFilterMode!!,
                         isEnabled = isEnabled!!

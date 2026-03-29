@@ -1,14 +1,14 @@
 package com.github.aakumykov.compose_playground.repository
 
-import com.github.aakumykov.compose_playground.model.SomeFilter
+import com.github.aakumykov.compose_playground.model.Filter
 import kotlinx.coroutines.flow.Flow
 
 interface FilterRepository {
-    val filters: Flow<List<SomeFilter>>
+    val filters: Flow<List<Filter>>
     suspend fun removeAllFilters()
 
-    suspend fun add(filter: SomeFilter)
-    suspend fun update(filter: SomeFilter)
-    suspend fun get(filterId: String?): SomeFilter?
+    suspend fun add(filter: Filter)
+    suspend fun update(filter: Filter)
+    suspend fun get(filterId: String?): Filter?
     suspend fun delete(filterId: String)
 }

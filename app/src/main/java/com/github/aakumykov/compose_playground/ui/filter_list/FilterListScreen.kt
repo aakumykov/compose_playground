@@ -31,7 +31,7 @@ import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.github.aakumykov.compose_playground.R
 import com.github.aakumykov.compose_playground.extensions.errorMsgExtended
-import com.github.aakumykov.compose_playground.model.SomeFilter
+import com.github.aakumykov.compose_playground.model.Filter
 import com.github.aakumykov.compose_playground.model.isBlack
 import com.github.aakumykov.compose_playground.ui.common.ErrorText
 import com.github.aakumykov.compose_playground.ui.common.LoadingThrobber
@@ -73,7 +73,7 @@ fun FilterListScreen(
 
 @Composable
 fun FilterList(
-    list: List<SomeFilter>,
+    list: List<Filter>,
     onItemClicked: (filterId: String) -> Unit,
     onAddClicked: () -> Unit,
     onClearClicked: () -> Unit,
@@ -110,7 +110,7 @@ fun FilterList(
 
 @Composable
 fun FilterListItem(
-    filter: SomeFilter,
+    filter: Filter,
     onItemClicked: (filterId: String) -> Unit,
     modifier: Modifier = Modifier
 ) {
