@@ -33,4 +33,8 @@ class DefaultFilterRepository @Inject constructor(
     override suspend fun get(filterId: String?): Filter? = withContext(dispatcher) {
         filterDAO.get(filterId)
     }
+
+    override suspend fun delete(filterId: String) = withContext(dispatcher) {
+        filterDAO.delete(filterId)
+    }
 }

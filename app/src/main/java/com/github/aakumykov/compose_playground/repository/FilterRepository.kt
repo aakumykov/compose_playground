@@ -11,4 +11,5 @@ interface FilterRepository {
     suspend fun add(filter: Filter)
     suspend fun update(filter: Filter)
     suspend fun get(filterId: String?): Filter?
+    suspend fun delete(filterId: String)
 }

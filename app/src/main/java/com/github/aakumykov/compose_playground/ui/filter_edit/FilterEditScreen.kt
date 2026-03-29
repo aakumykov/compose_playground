@@ -3,6 +3,7 @@ package com.github.aakumykov.compose_playground.ui.filter_edit
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Button
@@ -21,6 +22,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.font.FontWeight.Companion.Bold
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
@@ -31,6 +33,7 @@ import com.github.aakumykov.compose_playground.model.FilterMode
 import com.github.aakumykov.compose_playground.ui.common.DropDownMenu
 import com.github.aakumykov.compose_playground.ui.common.ErrorText
 import com.github.aakumykov.compose_playground.ui.common.LoadingThrobber
+import com.github.aakumykov.compose_playground.ui.theme.Danger
 import kotlinx.coroutines.launch
 
 @Composable
@@ -72,6 +75,11 @@ fun FilterEditScreen(
                     }
                 },
                 onCancelClicked = onCancelClicked,
+                onDeleteClicked = { filterId ->
+                    scope.launch {
+                        viewModel.deleteFilter(filterId)
+                    }
+                }
             )
         }
 
@@ -95,6 +103,7 @@ fun FilterEditForm(
     modifier: Modifier = Modifier,
     onSaveClicked: (filterMode: FilterMode?, enabled: Boolean) -> Unit,
     onCancelClicked: () -> Unit,
+    onDeleteClicked: (filterId: String) -> Unit,
 ) {
     var filterMode: FilterMode? by remember { mutableStateOf(state.mode) }
     var enabled : Boolean by rememberSaveable { mutableStateOf(state.enabled) }
@@ -104,6 +113,7 @@ fun FilterEditForm(
         Text(
             text = state.packageName,
             textAlign = TextAlign.Center,
+            fontWeight = Bold,
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(12.dp)
@@ -148,6 +158,20 @@ fun FilterEditForm(
             modifier = Modifier.fillMaxWidth()
         ) {
             Text(stringResource(R.string.button_cancel))
+        }
+
+        if (null != state.id) {
+            Spacer(modifier = Modifier.weight(1f))
+
+            Button(
+                onClick = { onDeleteClicked.invoke(state.id) },
+                colors = ButtonDefaults.buttonColors(
+                    containerColor = Danger
+                ),
+                modifier = Modifier.fillMaxWidth()
+            ) {
+                Text(stringResource(R.string.button_delete))
+            }
         }
     }
 }

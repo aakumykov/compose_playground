@@ -9,4 +9,5 @@
     <string name="label_filter_enabled_yes">Включен</string>
     <string name="label_filter_enabled_no">Выключен</string>
     <string name="description_filter_list_item_enabled">Фильтр активен</string>
+    <string name="button_delete">Удалить</string>
 </resources>

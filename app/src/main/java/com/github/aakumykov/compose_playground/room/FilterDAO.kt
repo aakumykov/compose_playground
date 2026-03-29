@@ -27,4 +27,7 @@ interface FilterDAO {
 
     @Query("SELECT * FROM filters WHERE id = :filterId")
     fun get(filterId: String?): Filter?
+
+    @Query("DELETE FROM filters WHERE id = :filterId")
+    fun delete(filterId: String)
 }

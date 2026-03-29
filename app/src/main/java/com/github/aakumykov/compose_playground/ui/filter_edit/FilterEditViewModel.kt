@@ -1,9 +1,6 @@
 package com.github.aakumykov.compose_playground.ui.filter_edit
 
-import androidx.compose.runtime.MutableState
-import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
-import androidx.lifecycle.viewModelScope
 import com.github.aakumykov.compose_playground.exceptions.NoSuchFilterException
 import com.github.aakumykov.compose_playground.model.Filter
 import com.github.aakumykov.compose_playground.model.FilterMode
@@ -12,11 +9,7 @@ import com.github.aakumykov.compose_playground.utils.currentTimestamp
 import dagger.hilt.android.lifecycle.HiltViewModel
 import jakarta.inject.Inject
 import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
-import kotlinx.coroutines.flow.flow
-import kotlinx.coroutines.flow.stateIn
-import kotlinx.coroutines.launch
 
 @HiltViewModel
 class FilterEditViewModel @Inject constructor(
@@ -80,5 +73,10 @@ class FilterEditViewModel @Inject constructor(
 
     suspend fun showError(exception: Exception) {
         _uiState.emit(FilterEditUIState.Error(exception))
+    }
+
+    suspend fun deleteFilter(filterId: String) {
+        filterRepository.delete(filterId)
+        _isCompleteState.emit(true)
     }
 }
