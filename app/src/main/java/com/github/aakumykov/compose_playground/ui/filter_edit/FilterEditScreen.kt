@@ -1,5 +1,6 @@
 package com.github.aakumykov.compose_playground.ui.filter_edit
 
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -138,13 +139,24 @@ fun FilterEditForm(
         ) {
             Switch(
                 checked = enabled,
-                onCheckedChange = { enabled = it }
+                onCheckedChange = { enabled = it },
+                modifier = Modifier.padding(end = 6.dp)
             )
             Text(
-                if(enabled) stringResource(R.string.label_filter_enabled_yes)
-                else stringResource(R.string.label_filter_enabled_no)
+                text = if(enabled) stringResource(R.string.label_filter_enabled_yes)
+                else stringResource(R.string.label_filter_enabled_no),
+                modifier = Modifier.clickable {
+                    enabled = !enabled
+                }
             )
         }
+
+        if (null != errorMessage) {
+            ErrorText(errorMessage,
+                modifier = Modifier.align(Alignment.CenterHorizontally))
+        }
+
+        Spacer(modifier = Modifier.weight(1f))
 
         Button(
             onClick = {
@@ -163,14 +175,7 @@ fun FilterEditForm(
             Text(stringResource(R.string.button_cancel))
         }
 
-        if (null != errorMessage) {
-            ErrorText(errorMessage,
-                modifier = Modifier.align(Alignment.CenterHorizontally))
-        }
-
         if (null != state.id) {
-            Spacer(modifier = Modifier.weight(1f))
-
             Button(
                 onClick = { onDeleteClicked.invoke(state.id) },
                 colors = ButtonDefaults.buttonColors(
