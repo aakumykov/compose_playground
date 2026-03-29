@@ -23,10 +23,6 @@ class FilterEditViewModel @Inject constructor(
     private val filterRepository: FilterRepository
 ) : ViewModel() {
 
-    init {
-        println()
-    }
-
     private val _uiState: MutableStateFlow<FilterEditUIState> = MutableStateFlow(FilterEditUIState.Loading)
     val uiState: StateFlow<FilterEditUIState> = _uiState
 
@@ -80,10 +76,6 @@ class FilterEditViewModel @Inject constructor(
         catch (t: Throwable) {
             // TODO: отображать ошибку
         }
-    }
-
-    override fun onCleared() {
-        super.onCleared()
     }
 
     suspend fun showError(exception: Exception) {
