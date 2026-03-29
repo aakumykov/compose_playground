@@ -4,7 +4,7 @@ import androidx.room.Dao
 import androidx.room.Insert
 import androidx.room.Query
 import androidx.room.Update
-import com.github.aakumykov.compose_playground.model.Filter
+import com.github.aakumykov.compose_playground.model.FilterMetadata
 import com.github.aakumykov.compose_playground.model.SomeFilter
 import kotlinx.coroutines.flow.Flow
 
@@ -12,21 +12,21 @@ import kotlinx.coroutines.flow.Flow
 interface FilterDAO {
 
     @Insert
-    fun add(filter: Filter)
+    fun add(filterMetadata: FilterMetadata)
 
     @Update
-    fun update(filter: Filter)
+    fun update(filterMetadata: FilterMetadata)
 
     // TODO: выделить в SomeFilterDAO
-    @Query("SELECT * FROM filters ORDER BY modified ASC")
+    @Query("SELECT * FROM ${FilterMetadata.TABLE_NAME} ORDER BY modified ASC")
     fun list(): Flow<List<SomeFilter>>
 
-    @Query("DELETE FROM filters")
+    @Query("DELETE FROM ${FilterMetadata.TABLE_NAME}")
     fun deleteAll()
 
-    @Query("SELECT * FROM filters WHERE id = :filterId")
+    @Query("SELECT * FROM ${FilterMetadata.TABLE_NAME} WHERE id = :filterId")
     fun get(filterId: String?): SomeFilter?
 
-    @Query("DELETE FROM filters WHERE id = :filterId")
+    @Query("DELETE FROM ${FilterMetadata.TABLE_NAME} WHERE id = :filterId")
     fun delete(filterId: String)
 }

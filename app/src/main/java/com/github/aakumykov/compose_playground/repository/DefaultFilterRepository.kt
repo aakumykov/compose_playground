@@ -1,6 +1,5 @@
 package com.github.aakumykov.compose_playground.repository
 
-import com.github.aakumykov.compose_playground.model.Filter
 import com.github.aakumykov.compose_playground.model.SomeFilter
 import com.github.aakumykov.compose_playground.repository.di.DispatcherType
 import com.github.aakumykov.compose_playground.room.FilterDAO
@@ -20,11 +19,11 @@ class DefaultFilterRepository @Inject constructor(
     override val filters: Flow<List<SomeFilter>> = filterDAO.list()
 
     override suspend fun add(filter: SomeFilter) = withContext(dispatcher) {
-        filterDAO.add(filter.filter)
+        filterDAO.add(filter.filterMetadata)
     }
 
     override suspend fun update(filter: SomeFilter) = withContext(dispatcher) {
-        filterDAO.update(filter.filter)
+        filterDAO.update(filter.filterMetadata)
     }
 
     override suspend fun removeAllFilters() = withContext(dispatcher) {

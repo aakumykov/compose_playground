@@ -1,6 +1,5 @@
 package com.github.aakumykov.compose_playground.ui.filter_list
 
-import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -19,12 +18,10 @@ import androidx.compose.material3.FloatingActionButtonDefaults
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
-import androidx.compose.material3.rememberContainedSearchBarState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
@@ -34,7 +31,6 @@ import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.github.aakumykov.compose_playground.R
 import com.github.aakumykov.compose_playground.extensions.errorMsgExtended
-import com.github.aakumykov.compose_playground.model.Filter
 import com.github.aakumykov.compose_playground.model.SomeFilter
 import com.github.aakumykov.compose_playground.model.isBlack
 import com.github.aakumykov.compose_playground.ui.common.ErrorText
@@ -124,10 +120,10 @@ fun FilterListItem(
         modifier = modifier.fillMaxWidth()
     ) {
         Icon(
-            imageVector = if (filter.filter.isBlack) Icons.Default.Circle
+            imageVector = if (filter.filterMetadata.isBlack) Icons.Default.Circle
             else Icons.Outlined.Circle,
             contentDescription = stringResource(
-                if (filter.filter.isBlack) R.string.description_filter_list_item_mode_icon_black
+                if (filter.filterMetadata.isBlack) R.string.description_filter_list_item_mode_icon_black
                 else R.string.description_filter_list_item_mode_icon_white
             )
         )
@@ -161,7 +157,7 @@ fun FilterListItem(
 @Composable
 fun FilterListScreenPreview() {
     FilterListScreen(
-        list = Filter.fakeList(),
+        list = FilterMetadata.fakeList(),
         onAddClicked = {},
     )
 }*/

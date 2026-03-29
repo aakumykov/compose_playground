@@ -2,7 +2,6 @@ package com.github.aakumykov.compose_playground.ui.filter_list
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.github.aakumykov.compose_playground.model.Filter
 import com.github.aakumykov.compose_playground.model.SomeFilter
 import com.github.aakumykov.compose_playground.repository.FilterRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -10,15 +9,9 @@ import jakarta.inject.Inject
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.catch
-import kotlinx.coroutines.flow.flatMapConcat
-import kotlinx.coroutines.flow.flatMapLatest
-import kotlinx.coroutines.flow.flow
-import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.flow.map
-import kotlinx.coroutines.flow.mapNotNull
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
-import kotlin.collections.map
 
 @HiltViewModel
 class FilterListViewModel @Inject constructor(

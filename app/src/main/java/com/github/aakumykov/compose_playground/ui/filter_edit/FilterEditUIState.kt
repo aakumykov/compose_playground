@@ -1,8 +1,7 @@
 package com.github.aakumykov.compose_playground.ui.filter_edit
 
-import com.github.aakumykov.compose_playground.model.Filter
+import com.github.aakumykov.compose_playground.model.FilterMetadata
 import com.github.aakumykov.compose_playground.model.FilterMode
-import com.github.aakumykov.compose_playground.utils.newRandomId
 
 sealed interface FilterEditUIState {
 
@@ -27,12 +26,12 @@ sealed interface FilterEditUIState {
                     enabled = false
                 )
             }
-            fun asEdit(filter: Filter): Edit {
+            fun asEdit(filterMetadata: FilterMetadata): Edit {
                 return Edit(
-                    id = filter.id,
-                    packageName = filter.packageName,
-                    mode = filter.mode,
-                    enabled = filter.enabled
+                    id = filterMetadata.id,
+                    packageName = filterMetadata.packageName,
+                    mode = filterMetadata.mode,
+                    enabled = filterMetadata.enabled
                 )
             }
         }

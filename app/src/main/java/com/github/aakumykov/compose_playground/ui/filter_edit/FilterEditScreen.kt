@@ -195,7 +195,7 @@ fun FilterEditForm(
 @Composable
 fun FilterEditScreenPreview() {
     FilterEditForm(
-        state = FilterEditUIState.Edit(Filter.random),
+        state = FilterEditUIState.Edit(FilterMetadata.random),
         onSaveClicked = { mode: FilterMode, isEnabled: Boolean -> },
         onCancelClicked = {},
         modifier = Modifier.padding(top = 50.dp)

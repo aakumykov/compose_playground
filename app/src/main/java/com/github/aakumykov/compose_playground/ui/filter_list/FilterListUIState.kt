@@ -1,6 +1,5 @@
 package com.github.aakumykov.compose_playground.ui.filter_list
 
-import com.github.aakumykov.compose_playground.model.Filter
 import com.github.aakumykov.compose_playground.model.SomeFilter
 
 sealed interface FilterListUIState {

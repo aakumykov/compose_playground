@@ -11,10 +11,8 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
 import java.util.Date
 
-@Entity(
-    tableName = "filters"
-)
-data class Filter(
+@Entity(tableName = FilterMetadata.TABLE_NAME)
+data class FilterMetadata(
     @PrimaryKey
     override val id: String,
 
@@ -31,7 +29,9 @@ data class Filter(
 {
     companion object {
 
-        val random get() = Filter(
+        const val TABLE_NAME = "filters_metadata"
+
+        val random get() = FilterMetadata(
             id = newRandomId,
             modified = Date().time,
             packageName = faker.app().name(),
@@ -40,14 +40,14 @@ data class Filter(
         )
 
 
-        fun fakeList(size: Int = 5): List<Filter> = buildList {
+        fun fakeList(size: Int = 5): List<FilterMetadata> = buildList {
             repeat(size) {
                 add(Companion.random)
             }
         }
 
 
-        fun fakeListFlow(size: Int = 5): Flow<List<Filter>> = flow {
+        fun fakeListFlow(size: Int = 5): Flow<List<FilterMetadata>> = flow {
             emit(fakeList(size))
         }
 
@@ -55,7 +55,7 @@ data class Filter(
         fun create(packageName: String,
                    mode: FilterMode,
                    isEnabled: Boolean
-        ): Filter = Filter(
+        ): FilterMetadata = FilterMetadata(
             id = newRandomId,
             packageName = packageName,
             mode = mode,
@@ -65,4 +65,4 @@ data class Filter(
     }
 }
 
-val Filter.isBlack: Boolean get() = FilterMode.BLACK == mode
+val FilterMetadata.isBlack: Boolean get() = FilterMode.BLACK == mode

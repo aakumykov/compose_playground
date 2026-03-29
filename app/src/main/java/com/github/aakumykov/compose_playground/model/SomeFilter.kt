@@ -4,12 +4,12 @@ import androidx.room.Embedded
 
 class SomeFilter(
     @Embedded
-    val filter: Filter,
+    val filterMetadata: FilterMetadata,
 
-): TheFilter by filter {
+    ): TheFilter by filterMetadata {
     companion object {
-        fun fromFilter(filter: Filter): SomeFilter = SomeFilter(
-            filter = filter
+        fun fromFilter(filterMetadata: FilterMetadata): SomeFilter = SomeFilter(
+            filterMetadata = filterMetadata
         )
     }
 }
