@@ -22,6 +22,7 @@ class Rule(
     @ColumnInfo(name = "rule_subject") val ruleSubject: RuleSubject,
     @ColumnInfo(name = "rule_operation") val ruleOperation: RuleOperation,
     @ColumnInfo(name = "check_pattern") val checkPattern: String,
+    val created: Long
 ) {
     companion object {
         const val TABLE_NAME = "rules"

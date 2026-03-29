@@ -4,6 +4,7 @@ import com.github.aakumykov.compose_playground.model.Filter
 import com.github.aakumykov.compose_playground.repository.di.DispatcherType
 import com.github.aakumykov.compose_playground.room.FilterDAO
 import com.github.aakumykov.compose_playground.room.FilterMetadataDAO
+import com.github.aakumykov.compose_playground.room.di.RuleDAO
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
@@ -16,8 +17,10 @@ class DefaultFilterRepository @Inject constructor(
     private val dispatcher: CoroutineDispatcher = Dispatchers.IO,
     private val filterMetadataDAO: FilterMetadataDAO,
     private val filterDAO: FilterDAO,
-): FilterRepository {
-
+    private val ruleDAO: RuleDAO,
+)
+    : FilterRepository
+{
     override val filters: Flow<List<Filter>> = filterDAO.list()
 
     override suspend fun get(filterId: String?): Filter? = withContext(dispatcher) {

@@ -27,6 +27,11 @@ class DatabaseModule {
     }
 
     @Provides
+    fun provideRuleDAO(appDatabase: AppDatabase): RuleDAO {
+        return appDatabase.getRuleDAO()
+    }
+
+    @Provides
     @Singleton
     fun provideAppDatabase(@ApplicationContext appContext: Context): AppDatabase {
         return Room.databaseBuilder(
