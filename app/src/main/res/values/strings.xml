@@ -24,4 +24,5 @@
     <string name="label_rule_subject">Объект</string>
     <string name="label_rule_operation">Операция</string>
     <string name="label_rule_check_pattern">Паттерн проверки</string>
+    <string name="page_title_filter_list">Фильтры</string>
 </resources>
