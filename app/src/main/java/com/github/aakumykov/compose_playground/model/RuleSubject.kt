@@ -20,3 +20,7 @@ enum class RuleSubject {
         }
     }
 }
+
+fun RuleSubject.toHumanName(resources: Resources): String {
+    return RuleSubject.enum2string.invoke(this, resources)
+}

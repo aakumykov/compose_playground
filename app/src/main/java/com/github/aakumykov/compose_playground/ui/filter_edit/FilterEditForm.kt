@@ -201,14 +201,3 @@ fun FilterEditFormPreview() {
         onDeleteClicked = {}
     )
 }
-
-
-@Composable
-fun RuleListItem(rule: Rule, modifier: Modifier = Modifier,
-                 onClick: (rule:Rule) -> Unit) {
-    Text(
-        rule.id,
-        modifier = Modifier.clickable{
-            onClick.invoke(rule)
-    })
-}

@@ -20,3 +20,15 @@ enum class RuleOperation {
         }
     }
 }
+
+fun RuleOperation.toHumanName(resources: Resources): String {
+    return RuleOperation.enum2string.invoke(this, resources)
+}
+
+fun RuleOperation.toSymbols(): String = when(this) {
+        RuleOperation.CONTAINS -> "*="
+        RuleOperation.STARTS_WITH -> "^="
+        RuleOperation.ENDS_WITH -> "=$"
+        RuleOperation.EQUALS -> "=="
+        RuleOperation.REGEXP -> "REGEXP"
+}
