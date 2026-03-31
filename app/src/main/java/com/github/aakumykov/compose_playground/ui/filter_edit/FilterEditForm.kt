@@ -10,6 +10,7 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
+import androidx.compose.material.Divider
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.FloatingActionButton
@@ -154,12 +155,17 @@ fun RulesList(
             .fillMaxWidth()
             .background(Color(0xFFE5E5F1))
     ) {
-        LazyColumn(modifier = Modifier.fillMaxWidth()) {
+        LazyColumn(
+            modifier = Modifier.fillMaxWidth()
+                .padding(8.dp)
+        ) {
             items(items = rules, key = { it.id }) { rule ->
                 RuleListItem(
                     rule,
+                    verticalPadding = 6.dp,
                     onClick = onRuleClicked
                 )
+                Divider()
             }
         }
 
