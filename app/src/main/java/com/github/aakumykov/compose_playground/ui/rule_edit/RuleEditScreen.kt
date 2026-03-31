@@ -32,7 +32,7 @@ fun RuleEditScreen(
 
     when(uiState) {
         is RuleUIState.Edit -> RuleEditForm(
-            uiState = (uiState as RuleUIState.Edit),
+            editState = (uiState as RuleUIState.Edit),
             onSaveClicked = { editState: RuleUIState.Edit ->
                 scope.launch {
                     viewModel.createOrUpdate(editState).also {

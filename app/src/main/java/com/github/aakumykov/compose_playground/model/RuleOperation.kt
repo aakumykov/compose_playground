@@ -1,6 +1,7 @@
 package com.github.aakumykov.compose_playground.model
 
 import android.content.res.Resources
+import androidx.compose.ui.platform.LocalResources
 import com.github.aakumykov.compose_playground.R
 
 enum class RuleOperation {

@@ -1,5 +1,6 @@
 package com.github.aakumykov.compose_playground.ui.rule_edit
 
+import androidx.annotation.StringRes
 import com.github.aakumykov.compose_playground.R
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
@@ -29,26 +30,35 @@ import com.github.aakumykov.compose_playground.utils.newRandomId
 
 @Composable
 fun RuleEditForm(
-    uiState: RuleUIState.Edit,
+    editState: RuleUIState.Edit,
     modifier: Modifier = Modifier,
     onSaveClicked: (editState: RuleUIState.Edit) -> Unit,
     onCancelClicked: () -> Unit,
 ) {
-    var subject: RuleSubject? by remember { mutableStateOf(uiState.ruleSubject) }
-    var operation: RuleOperation? by remember { mutableStateOf(uiState.ruleOperation) }
-    var checkPattern: String? by remember { mutableStateOf(uiState.checkPattern) }
+    var subject: RuleSubject? by remember { mutableStateOf(editState.ruleSubject) }
+    var operation: RuleOperation? by remember { mutableStateOf(editState.ruleOperation) }
+    var checkPattern: String? by remember { mutableStateOf(editState.checkPattern) }
 
     Column(modifier = modifier.fillMaxWidth()) {
 
+        @Composable
+        @StringRes
+        fun creationOrEditionPageTitle(editState: RuleUIState.Edit): String {
+            return stringResource(
+                if (null != editState.created) R.string.page_title_rule_edit
+                else R.string.page_title_rule_create
+            )
+        }
+
         EditFormTitle(
-            title = stringResource(R.string.page_title_rule_edit),
+            title = creationOrEditionPageTitle(editState),
             modifier = Modifier.padding(8.dp)
         )
 
         DropDownMenu(
             label = stringResource(R.string.label_rule_subject),
             optionList = RuleSubject.entries.toList(),
-            preselectedOption = uiState.ruleSubject,
+            preselectedOption = editState.ruleSubject ?: RuleSubject.TITLE,
             onOptionSelected = { subject = it },
             option2string = RuleSubject.enum2string
         )
@@ -56,7 +66,7 @@ fun RuleEditForm(
         DropDownMenu(
             label = stringResource(R.string.label_rule_operation),
             optionList = RuleOperation.entries.toList(),
-            preselectedOption = uiState.ruleOperation,
+            preselectedOption = editState.ruleOperation ?: RuleOperation.CONTAINS,
             onOptionSelected = { operation = it },
             option2string = RuleOperation.enum2string
         )
@@ -77,7 +87,7 @@ fun RuleEditForm(
                         ruleOperation = operation,
                         ruleSubject = subject,
                         checkPattern = checkPattern,
-                        created = uiState.created
+                        created = editState.created
                     )
                 )
             },
@@ -102,9 +112,17 @@ fun RuleEditForm(
 @Composable
 fun RuleEditFormPreview() {
     RuleEditForm(
-        uiState = RuleUIState.Edit.forEdit(Rule.random(newRandomId)),
+        editState = RuleUIState.Edit.forEdit(Rule.random(newRandomId)),
         modifier = Modifier,
         onSaveClicked = {},
         onCancelClicked = {},
     )
 }
+
+
+/*
+@StringRes
+fun creationOrEditionPageTitle(editState: RuleUIState.Edit): Int {
+    return if (null != editState.created) R.string.page_title_rule_create
+    else R.string.page_title_rule_edit
+}*/
