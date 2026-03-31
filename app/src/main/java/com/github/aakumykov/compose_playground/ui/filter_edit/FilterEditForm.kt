@@ -114,8 +114,8 @@ fun FilterEditForm(
             onClick = {
                 onSaveClicked.invoke(filterMode, enabled)
             },
-            modifier = Modifier.fillMaxWidth()
-        ) { Text(stringResource(R.string.button_save)) }
+            modifier = Modifier.fillMaxWidth().padding(top = 4.dp)
+        ) { Text(stringResource(R.string.button_save_filter)) }
 
         Button(
             onClick = onCancelClicked,
@@ -125,7 +125,7 @@ fun FilterEditForm(
             ),
             modifier = Modifier.fillMaxWidth()
         ) {
-            Text(stringResource(R.string.button_cancel))
+            Text(stringResource(R.string.button_cancel_edit))
         }
 
         if (null != state.id) {
@@ -136,7 +136,7 @@ fun FilterEditForm(
                 ),
                 modifier = Modifier.fillMaxWidth()
             ) {
-                Text(stringResource(R.string.button_delete))
+                Text(stringResource(R.string.button_delete_filter))
             }
         }
     }
