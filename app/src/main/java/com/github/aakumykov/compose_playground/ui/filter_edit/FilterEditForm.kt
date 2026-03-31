@@ -38,6 +38,7 @@ import com.github.aakumykov.compose_playground.model.Filter
 import com.github.aakumykov.compose_playground.model.FilterMode
 import com.github.aakumykov.compose_playground.model.Rule
 import com.github.aakumykov.compose_playground.ui.common.DropDownMenu
+import com.github.aakumykov.compose_playground.ui.common.EditFormTitle
 import com.github.aakumykov.compose_playground.ui.common.ErrorText
 import com.github.aakumykov.compose_playground.ui.theme.Danger
 import com.github.aakumykov.compose_playground.utils.randomBool
@@ -59,13 +60,9 @@ fun FilterEditForm(
 
     Column(modifier = modifier) {
 
-        Text(
-            text = state.packageName,
-            textAlign = TextAlign.Center,
-            fontWeight = FontWeight.Bold,
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(12.dp)
+        EditFormTitle(
+            title = state.packageName,
+            modifier = Modifier.padding(8.dp)
         )
 
         DropDownMenu(

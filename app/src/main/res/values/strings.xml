@@ -29,4 +29,5 @@
     <string name="button_save_filter">Сохранить фильтр</string>
     <string name="button_delete_filter">Удалить фильтр</string>
     <string name="button_cancel_edit">Отменить правку</string>
+    <string name="page_title_rule_edit">Настройка правила</string>
 </resources>

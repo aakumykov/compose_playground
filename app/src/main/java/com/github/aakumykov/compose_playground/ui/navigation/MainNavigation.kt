@@ -11,6 +11,7 @@ import androidx.navigation3.runtime.entryProvider
 import androidx.navigation3.runtime.rememberNavBackStack
 import androidx.navigation3.runtime.rememberSaveableStateHolderNavEntryDecorator
 import androidx.navigation3.ui.NavDisplay
+import com.github.aakumykov.compose_playground.model.Rule
 import com.github.aakumykov.compose_playground.ui.rule_edit.RuleEditScreen
 import com.github.aakumykov.compose_playground.ui.filter_edit.FilterEditScreen
 import com.github.aakumykov.compose_playground.ui.filter_list.FilterListScreen
@@ -47,10 +48,15 @@ fun MainNavigation() {
                     filterId = it.filterId,
                     packageName = it.packageName,
                     onAddRuleClicked = { filterId: String ->
-                        backStack.add(RuleEditTarget.forCreate(filterId))
+                        backStack.add(RuleEditTarget.forCreate(
+                            filterId
+                        ))
                     },
-                    onRuleClicked = { ruleId: String, filterId: String ->
-                        backStack.add(RuleEditTarget.forEdit(ruleId,filterId))
+                    onRuleClicked = { rule: Rule ->
+                        backStack.add(RuleEditTarget.forEdit(
+                            ruleId = rule.id,
+                            filterId = rule.filterId
+                        ))
                     },
                     onFilterSaved = {
                         backStack.removeLastOrNull()

@@ -36,8 +36,8 @@ data class FilterEditTarget(
 @ConsistentCopyVisibility
 @Serializable
 data class RuleEditTarget private constructor(
-    val filterId: String,
-    val ruleId: String?
+    val ruleId: String?,
+    val filterId: String
 ): NavKey {
     companion object {
         fun forCreate(filterId: String): RuleEditTarget = RuleEditTarget(filterId = filterId, ruleId = null)

@@ -24,7 +24,7 @@ fun FilterEditScreen(
     filterId: String?,
     packageName: String?,
     onAddRuleClicked: (filterId: String) -> Unit,
-    onRuleClicked: (ruleId: String, filterId: String) -> Unit,
+    onRuleClicked: (rule:Rule) -> Unit,
     onFilterSaved: () -> Unit,
     onCancelClicked: () -> Unit,
     modifier: Modifier = Modifier,
@@ -80,7 +80,7 @@ fun FilterEditScreen(
                         viewModel.deleteFilter(filterId)
                     }
                 },
-                onRuleClicked = {}
+                onRuleClicked = onRuleClicked
             )
         }
 
