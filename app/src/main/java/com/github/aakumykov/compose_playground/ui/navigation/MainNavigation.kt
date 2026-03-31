@@ -17,7 +17,7 @@ import com.github.aakumykov.compose_playground.ui.filter_list.FilterListScreen
 import com.github.aakumykov.compose_playground.utils.randomString
 
 @Composable
-fun MainNavigationNew() {
+fun MainNavigation() {
 
     val backStack = rememberNavBackStack(FilterListTarget)
 
