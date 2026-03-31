@@ -1,4 +1,4 @@
-package com.github.aakumykov.compose_playground.ui
+package com.github.aakumykov.compose_playground.ui.rule_edit
 
 import com.github.aakumykov.compose_playground.model.Rule
 import com.github.aakumykov.compose_playground.model.RuleOperation

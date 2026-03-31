@@ -1,4 +1,4 @@
-package com.github.aakumykov.compose_playground.exceptions
+package com.github.aakumykov.compose_playground.ui.filter_edit
 
 class NoSuchFilterException(val filterId: String?) : Exception() {
     override val message: String

@@ -1,8 +1,9 @@
-package com.github.aakumykov.compose_playground.ui
+package com.github.aakumykov.compose_playground.ui.rule_edit
 
 import androidx.lifecycle.ViewModel
 import com.github.aakumykov.compose_playground.model.Rule
 import com.github.aakumykov.compose_playground.repository.RuleRepository
+import com.github.aakumykov.compose_playground.ui.rule_edit.NoSuchRuleException
 import com.github.aakumykov.compose_playground.utils.currentTimestamp
 import com.github.aakumykov.compose_playground.utils.newRandomId
 import dagger.hilt.android.lifecycle.HiltViewModel

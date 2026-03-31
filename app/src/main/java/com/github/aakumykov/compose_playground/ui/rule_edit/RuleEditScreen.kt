@@ -1,4 +1,4 @@
-package com.github.aakumykov.compose_playground.ui
+package com.github.aakumykov.compose_playground.ui.rule_edit
 
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer

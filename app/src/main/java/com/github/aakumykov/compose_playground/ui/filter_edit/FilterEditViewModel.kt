@@ -3,7 +3,7 @@ package com.github.aakumykov.compose_playground.ui.filter_edit
 import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.github.aakumykov.compose_playground.exceptions.NoSuchFilterException
+import com.github.aakumykov.compose_playground.ui.filter_edit.NoSuchFilterException
 import com.github.aakumykov.compose_playground.extensions.errorMsg
 import com.github.aakumykov.compose_playground.extensions.errorMsgExtended
 import com.github.aakumykov.compose_playground.model.FilterMetadata

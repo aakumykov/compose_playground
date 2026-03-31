@@ -1,4 +1,4 @@
-package com.github.aakumykov.compose_playground.ui
+package com.github.aakumykov.compose_playground.ui.rule_edit
 
 class NoSuchRuleException(val ruleId: String): Exception() {
     override val message: String
