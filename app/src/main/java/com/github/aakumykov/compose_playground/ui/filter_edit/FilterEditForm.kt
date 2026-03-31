@@ -31,6 +31,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.github.aakumykov.compose_playground.R
 import com.github.aakumykov.compose_playground.model.Filter
+import com.github.aakumykov.compose_playground.model.FilterMetadata
 import com.github.aakumykov.compose_playground.model.FilterMode
 import com.github.aakumykov.compose_playground.model.Rule
 import com.github.aakumykov.compose_playground.ui.common.DropDownMenu
@@ -41,23 +42,23 @@ import com.github.aakumykov.compose_playground.utils.randomBool
 
 @Composable
 fun FilterEditForm(
-    state: FilterUIState.Edit,
+    editState: FilterUIState.Edit,
     rules: List<Rule>,
     errorMessage: String?,
     modifier: Modifier = Modifier,
-    onAddRuleClicked: () -> Unit,
+    onAddRuleClicked: (filterMetadata: FilterMetadata) -> Unit,
     onRuleClicked: (rule:Rule) -> Unit,
     onSaveClicked: (filterMode: FilterMode?, enabled: Boolean) -> Unit,
     onCancelClicked: () -> Unit,
     onDeleteClicked: (filterId: String) -> Unit,
 ) {
-    var filterMode: FilterMode? by remember { mutableStateOf(state.mode) }
-    var enabled : Boolean by rememberSaveable { mutableStateOf(state.enabled) }
+    var filterMode: FilterMode? by remember { mutableStateOf(editState.mode) }
+    var enabled : Boolean by rememberSaveable { mutableStateOf(editState.enabled) }
 
     Column(modifier = modifier) {
 
         EditFormTitle(
-            title = state.packageName,
+            title = editState.packageName,
             modifier = Modifier.padding(8.dp)
         )
 
@@ -65,7 +66,7 @@ fun FilterEditForm(
             label = stringResource(R.string.label_filter_mode),
             optionList = FilterMode.entries.toList(),
             option2string = FilterMode.enum2string,
-            preselectedOption = state.mode,
+            preselectedOption = editState.mode,
             modifier = Modifier,
             onOptionSelected = { filterMode = it }
         )
@@ -89,50 +90,42 @@ fun FilterEditForm(
             )
         }
 
+
         if (null != errorMessage) {
-            ErrorText(
-                errorMessage,
-                modifier = Modifier.align(Alignment.CenterHorizontally)
-            )
+            ErrorText(errorMessage,
+                modifier = Modifier.align(Alignment.CenterHorizontally))
         }
+
 
         RuleList(
             rules = rules,
             modifier = Modifier.weight(1f, true),
-            onAddRuleClicked = onAddRuleClicked,
+            onAddRuleClicked = {
+                onAddRuleClicked.invoke(editState.metadata)
+            },
             onRuleClicked = onRuleClicked,
         )
 
-        Button(
-            onClick = {
-                onSaveClicked.invoke(filterMode, enabled)
-            },
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(top = 4.dp)
-        ) { Text(stringResource(R.string.button_save_filter)) }
 
-        Button(
-            onClick = onCancelClicked,
-            colors = ButtonDefaults.buttonColors(
-                contentColor = MaterialTheme.colorScheme.onSecondary,
-                containerColor = MaterialTheme.colorScheme.secondary
-            ),
-            modifier = Modifier.fillMaxWidth()
-        ) {
-            Text(stringResource(R.string.button_cancel))
-        }
+        SaveButton(onClick = {
+            onSaveClicked.invoke(
+                editState.mode,
+                editState.enabled
+            )
+        }, modifier = Modifier
+            .fillMaxWidth()
+            .padding(top = 4.dp)
+        )
 
-        if (null != state.id) {
-            Button(
-                onClick = { onDeleteClicked.invoke(state.id) },
-                colors = ButtonDefaults.buttonColors(
-                    containerColor = Danger
-                ),
-                modifier = Modifier.fillMaxWidth()
-            ) {
-                Text(stringResource(R.string.button_delete_filter))
-            }
+
+        CancelButton(onClick = onCancelClicked,
+            modifier = Modifier.fillMaxWidth())
+
+
+        if (null != editState.id) {
+            DeleteButton(onClick = {
+                onDeleteClicked.invoke(editState.id)
+            }, modifier = Modifier.fillMaxWidth())
         }
     }
 }
@@ -149,7 +142,7 @@ fun RuleList(
         modifier = modifier.fillMaxWidth(),
     ) {
         if (rules.isEmpty()) {
-            RuleAddButton(
+            AddRuleButton(
                 onClick = onAddRuleClicked,
                 modifier = Modifier.align(Alignment.Center)
             )
@@ -169,7 +162,7 @@ fun RuleList(
                 }
             }
 
-            RuleAddButton(
+            AddRuleButton(
                 onClick = onAddRuleClicked,
                 modifier = Modifier.align(Alignment.BottomEnd)
             )
@@ -178,7 +171,7 @@ fun RuleList(
 }
 
 @Composable
-fun RuleAddButton(
+fun AddRuleButton(
     onClick: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
@@ -209,7 +202,8 @@ fun FilterEditFormPreview() {
             packageName = filter.packageName,
             mode = filter.mode,
             enabled = randomBool,
-            rules = Rule.randomList(filter.id)
+            rules = Rule.randomList(filter.id),
+            metadata = filter.filterMetadata
         )
     }
     FilterEditForm(
@@ -222,4 +216,41 @@ fun FilterEditFormPreview() {
         onRuleClicked = {},
         onDeleteClicked = {}
     )
+}
+
+@Composable
+fun SaveButton(onClick: () -> Unit, modifier: Modifier = Modifier) {
+    Button(
+        onClick = onClick,
+        modifier = modifier
+    ) {
+        Text(stringResource(R.string.button_save_filter))
+    }
+}
+
+@Composable
+fun CancelButton(onClick: () -> Unit, modifier: Modifier = Modifier) {
+    Button(
+        onClick = onClick,
+        colors = ButtonDefaults.buttonColors(
+            contentColor = MaterialTheme.colorScheme.onSecondary,
+            containerColor = MaterialTheme.colorScheme.secondary
+        ),
+        modifier = modifier
+    ) {
+        Text(stringResource(R.string.button_cancel))
+    }
+}
+
+@Composable
+fun DeleteButton(onClick: () -> Unit, modifier: Modifier = Modifier) {
+    Button(
+        onClick = onClick,
+        colors = ButtonDefaults.buttonColors(
+            containerColor = Danger
+        ),
+        modifier = modifier
+    ) {
+        Text(stringResource(R.string.button_delete_filter))
+    }
 }

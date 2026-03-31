@@ -14,6 +14,7 @@ import androidx.navigation3.runtime.entryProvider
 import androidx.navigation3.runtime.rememberNavBackStack
 import androidx.navigation3.runtime.rememberSaveableStateHolderNavEntryDecorator
 import androidx.navigation3.ui.NavDisplay
+import com.github.aakumykov.compose_playground.model.FilterMetadata
 import com.github.aakumykov.compose_playground.model.Rule
 import com.github.aakumykov.compose_playground.ui.rule_edit.RuleEditScreen
 import com.github.aakumykov.compose_playground.ui.filter_edit.FilterEditScreen
@@ -53,10 +54,8 @@ fun MainNavigation(modifier: Modifier = Modifier) {
                 FilterEditScreen(
                     filterId = it.filterId,
                     packageName = it.packageName,
-                    onAddRuleClicked = { filterId: String ->
-                        backStack.add(RuleEditTarget.forCreate(
-                            filterId
-                        ))
+                    onAddRuleClicked = { filterMetadata: FilterMetadata ->
+                        backStack.add(RuleEditTarget.forCreate(filterMetadata.id))
                     },
                     onRuleClicked = { rule: Rule ->
                         backStack.add(RuleEditTarget.forEdit(

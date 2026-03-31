@@ -1,6 +1,7 @@
 package com.github.aakumykov.compose_playground.ui.filter_edit
 
 import android.util.Log
+import androidx.compose.runtime.Composable
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.github.aakumykov.compose_playground.extensions.errorMsg
@@ -25,7 +26,9 @@ class FilterEditViewModel @Inject constructor(
     private val appPreferences: AppPreferences,
 ) : ViewModel() {
 
-    private val _uiState: MutableStateFlow<FilterUIState> = MutableStateFlow(FilterUIState.Loading)
+
+    private val _uiState: MutableStateFlow<FilterUIState>
+        = MutableStateFlow(FilterUIState.Loading)
     val uiState: StateFlow<FilterUIState> = _uiState
 
     private val _rules: MutableStateFlow<List<Rule>> = MutableStateFlow(emptyList())
@@ -41,7 +44,6 @@ class FilterEditViewModel @Inject constructor(
 
     private val currentEditState: FilterUIState.Edit
         get() = uiState.value as FilterUIState.Edit
-
 
     suspend fun startWorkForCreate(packageName: String) {
         isCreation = true

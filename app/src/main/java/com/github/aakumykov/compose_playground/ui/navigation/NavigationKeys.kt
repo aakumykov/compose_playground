@@ -17,6 +17,7 @@
 package com.github.aakumykov.compose_playground.ui.navigation
 
 import androidx.navigation3.runtime.NavKey
+import com.github.aakumykov.compose_playground.model.FilterMode
 import kotlinx.serialization.Serializable
 
 @Serializable
@@ -37,10 +38,12 @@ data class FilterEditTarget(
 @Serializable
 data class RuleEditTarget private constructor(
     val ruleId: String?,
-    val filterId: String
+    val filterId: String,
 ): NavKey {
     companion object {
         fun forCreate(filterId: String): RuleEditTarget = RuleEditTarget(filterId = filterId, ruleId = null)
+
         fun forEdit(ruleId: String, filterId: String): RuleEditTarget = RuleEditTarget(filterId = filterId, ruleId = ruleId)
+
     }
 }

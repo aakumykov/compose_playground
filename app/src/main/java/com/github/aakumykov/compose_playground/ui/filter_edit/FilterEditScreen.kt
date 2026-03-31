@@ -9,7 +9,6 @@ import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.github.aakumykov.compose_playground.extensions.errorMsgExtended
 import com.github.aakumykov.compose_playground.extensions.showToast
@@ -24,7 +23,7 @@ import kotlinx.coroutines.launch
 fun FilterEditScreen(
     filterId: String?,
     packageName: String?,
-    onAddRuleClicked: (filterId: String) -> Unit,
+    onAddRuleClicked: (filterMetadata: FilterMetadata) -> Unit,
     onRuleClicked: (rule:Rule) -> Unit,
     onFilterSaved: () -> Unit,
     onCancelClicked: () -> Unit,
@@ -62,12 +61,12 @@ fun FilterEditScreen(
 
         is FilterUIState.Edit -> {
             FilterEditForm(
-                state = uiState as FilterUIState.Edit,
+                editState = uiState as FilterUIState.Edit,
                 rules = rules,
                 errorMessage = errorMessage,
                 modifier = modifier,
                 onAddRuleClicked = {
-                    if (null != filterId) onAddRuleClicked.invoke(filterId)
+                    if (null != filterId) onAddRuleClicked.invoke((uiState as FilterUIState.Edit).metadata)
                     else context.showToast("filterId is null")
                 },
                 onSaveClicked = { filterMode: FilterMode?, isEnabled: Boolean? ->
