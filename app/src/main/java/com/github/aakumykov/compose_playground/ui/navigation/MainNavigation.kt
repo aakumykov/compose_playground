@@ -1,9 +1,12 @@
 package com.github.aakumykov.compose_playground.ui.navigation
 
+import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.safeDrawingPadding
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
 import androidx.lifecycle.viewmodel.navigation3.rememberViewModelStoreNavEntryDecorator
@@ -18,7 +21,7 @@ import com.github.aakumykov.compose_playground.ui.filter_list.FilterListScreen
 import com.github.aakumykov.compose_playground.utils.randomString
 
 @Composable
-fun MainNavigation() {
+fun MainNavigation(modifier: Modifier = Modifier) {
 
     val backStack = rememberNavBackStack(FilterListTarget)
 
@@ -39,7 +42,10 @@ fun MainNavigation() {
                     onAddClicked = {
                         backStack.add(FilterEditTarget.byPackageName(randomString))
                     },
-                    modifier = Modifier.safeDrawingPadding().padding(16.dp)
+                    modifier = Modifier
+                        .fillMaxSize()
+                        .safeDrawingPadding()
+                        .padding(12.dp)
                 )
             }
 
@@ -79,6 +85,7 @@ fun MainNavigation() {
                     viewModel = hiltViewModel()
                 )
             }
-        }
+        },
+        modifier = modifier
     )
 }

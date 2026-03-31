@@ -13,6 +13,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.github.aakumykov.compose_playground.extensions.errorMsgExtended
 import com.github.aakumykov.compose_playground.extensions.showToast
+import com.github.aakumykov.compose_playground.model.FilterMetadata
 import com.github.aakumykov.compose_playground.model.FilterMode
 import com.github.aakumykov.compose_playground.model.Rule
 import com.github.aakumykov.compose_playground.ui.common.ErrorText
@@ -30,7 +31,7 @@ fun FilterEditScreen(
     modifier: Modifier = Modifier,
     viewModel: FilterEditViewModel
 ) {
-    val uiState: FilterEditUIState by viewModel.uiState.collectAsStateWithLifecycle()
+    val uiState: FilterUIState by viewModel.uiState.collectAsStateWithLifecycle()
     val errorMessage: String? by viewModel.errorMessage.collectAsStateWithLifecycle()
     var rules: List<Rule> by remember { mutableStateOf(emptyList()) }
 
@@ -59,9 +60,9 @@ fun FilterEditScreen(
 
     when(uiState) {
 
-        is FilterEditUIState.Edit -> {
+        is FilterUIState.Edit -> {
             FilterEditForm(
-                state = uiState as FilterEditUIState.Edit,
+                state = uiState as FilterUIState.Edit,
                 rules = rules,
                 errorMessage = errorMessage,
                 modifier = modifier,
@@ -71,7 +72,8 @@ fun FilterEditScreen(
                 },
                 onSaveClicked = { filterMode: FilterMode?, isEnabled: Boolean? ->
                     scope.launch {
-                        viewModel.createOfUpdateFilter(filterMode, isEnabled)
+                        viewModel.createOfUpdateFilter(
+                            filterMode, isEnabled)
                     }
                 },
                 onCancelClicked = onCancelClicked,
@@ -84,32 +86,15 @@ fun FilterEditScreen(
             )
         }
 
-        is FilterEditUIState.Error -> {
+        is FilterUIState.Error -> {
             ErrorText(
-                text = (uiState as FilterEditUIState.Error).throwable.errorMsgExtended,
+                text = (uiState as FilterUIState.Error).throwable.errorMsgExtended,
                 modifier = modifier
             )
         }
 
-        is FilterEditUIState.Loading -> {
+        is FilterUIState.Loading -> {
             LoadingThrobber(modifier = modifier)
         }
     }
-}
-
-
-@Preview(showSystemUi = true,
-    device = "spec:width=400dp,height=750dp,dpi=240")
-@Composable
-fun FilterEditScreenPreview() {
-    FilterEditForm(
-        state = FilterEditUIState.Edit.asCreate("packageName"),
-        rules = emptyList(),
-        onAddRuleClicked = {},
-        onSaveClicked = { _: FilterMode?, _: Boolean -> },
-        onCancelClicked = {},
-        onDeleteClicked = { _ -> },
-        errorMessage = null,
-        onRuleClicked = {}
-    )
 }

@@ -1,6 +1,5 @@
 package com.github.aakumykov.compose_playground.ui.filter_edit
 
-import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -10,10 +9,10 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
-import androidx.compose.material.Divider
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.FloatingActionButton
+import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Switch
@@ -26,7 +25,6 @@ import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
@@ -43,7 +41,7 @@ import com.github.aakumykov.compose_playground.utils.randomBool
 
 @Composable
 fun FilterEditForm(
-    state: FilterEditUIState.Edit,
+    state: FilterUIState.Edit,
     rules: List<Rule>,
     errorMessage: String?,
     modifier: Modifier = Modifier,
@@ -109,7 +107,9 @@ fun FilterEditForm(
             onClick = {
                 onSaveClicked.invoke(filterMode, enabled)
             },
-            modifier = Modifier.fillMaxWidth().padding(top = 4.dp)
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(top = 4.dp)
         ) { Text(stringResource(R.string.button_save_filter)) }
 
         Button(
@@ -146,17 +146,17 @@ fun RuleList(
     onRuleClicked: (rule:Rule) -> Unit,
 ) {
     Box(
-        modifier = modifier
-            .fillMaxWidth()
-            .background(Color(0xFFE5E5F1))
+        modifier = modifier.fillMaxWidth(),
     ) {
         if (rules.isEmpty()) {
-            Text(stringResource(R.string.rules_list_is_empty),
+            RuleAddButton(
+                onClick = onAddRuleClicked,
                 modifier = Modifier.align(Alignment.Center)
             )
         } else {
             LazyColumn(
-                modifier = Modifier.fillMaxWidth()
+                modifier = Modifier
+                    .fillMaxWidth()
                     .padding(8.dp)
             ) {
                 items(items = rules, key = { it.id }) { rule ->
@@ -165,27 +165,36 @@ fun RuleList(
                         verticalPadding = 6.dp,
                         onClick = onRuleClicked
                     )
-                    Divider()
+                    HorizontalDivider()
                 }
             }
-        }
 
-        FloatingActionButton(
-            onClick = onAddRuleClicked,
-            modifier = Modifier
-                .padding(horizontal = 16.dp)
-                .align(Alignment.Center)
-        ) {
-            Row(verticalAlignment = Alignment.CenterVertically) {
-                Text(
-                    stringResource(R.string.filter_edit_add_rulle_button_tex),
-                    modifier = Modifier.padding(horizontal = 8.dp)
-                )
-                Icon(
-                    painter = painterResource(R.drawable.baseline_add_24),
-                    contentDescription = stringResource(R.string.description_filter_add_button)
-                )
-            }
+            RuleAddButton(
+                onClick = onAddRuleClicked,
+                modifier = Modifier.align(Alignment.BottomEnd)
+            )
+        }
+    }
+}
+
+@Composable
+fun RuleAddButton(
+    onClick: () -> Unit,
+    modifier: Modifier = Modifier,
+) {
+    FloatingActionButton(
+        onClick = onClick,
+        modifier = modifier.padding(horizontal = 16.dp)
+    ) {
+        Row(verticalAlignment = Alignment.CenterVertically) {
+            Text(
+                stringResource(R.string.filter_edit_add_rulle_button_tex),
+                modifier = Modifier.padding(horizontal = 8.dp)
+            )
+            Icon(
+                painter = painterResource(R.drawable.baseline_add_24),
+                contentDescription = stringResource(R.string.description_filter_add_button)
+            )
         }
     }
 }
@@ -195,7 +204,7 @@ fun RuleList(
 @Composable
 fun FilterEditFormPreview() {
     val uiState = Filter.random().let { filter ->
-        FilterEditUIState.Edit(
+        FilterUIState.Edit(
             id = filter.id,
             packageName = filter.packageName,
             mode = filter.mode,

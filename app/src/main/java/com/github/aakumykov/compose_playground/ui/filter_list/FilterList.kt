@@ -55,16 +55,6 @@ fun FilterList(
                 contentDescription = stringResource(R.string.description_filter_add_button)
             )
         }
-        FloatingActionButton(
-            onClick = onClearClicked,
-            shape = FloatingActionButtonDefaults.smallShape,
-            modifier = Modifier.align(Alignment.BottomStart)
-        ) {
-            Icon(
-                painter = painterResource(R.drawable.outline_clear_all_24),
-                contentDescription = stringResource(R.string.description_filter_add_button)
-            )
-        }
     }
 }
 

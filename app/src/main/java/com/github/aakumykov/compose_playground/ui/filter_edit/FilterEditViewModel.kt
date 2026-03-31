@@ -3,7 +3,6 @@ package com.github.aakumykov.compose_playground.ui.filter_edit
 import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.github.aakumykov.compose_playground.ui.filter_edit.NoSuchFilterException
 import com.github.aakumykov.compose_playground.extensions.errorMsg
 import com.github.aakumykov.compose_playground.extensions.errorMsgExtended
 import com.github.aakumykov.compose_playground.model.FilterMetadata
@@ -17,17 +16,17 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import jakarta.inject.Inject
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
-import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
 
 @HiltViewModel
 class FilterEditViewModel @Inject constructor(
     private val filterRepository: FilterRepository,
-    private val ruleRepository: RuleRepository
+    private val ruleRepository: RuleRepository,
+    private val appPreferences: AppPreferences,
 ) : ViewModel() {
 
-    private val _uiState: MutableStateFlow<FilterEditUIState> = MutableStateFlow(FilterEditUIState.Loading)
-    val uiState: StateFlow<FilterEditUIState> = _uiState
+    private val _uiState: MutableStateFlow<FilterUIState> = MutableStateFlow(FilterUIState.Loading)
+    val uiState: StateFlow<FilterUIState> = _uiState
 
     private val _rules: MutableStateFlow<List<Rule>> = MutableStateFlow(emptyList())
     val rules: StateFlow<List<Rule>> = _rules
@@ -38,22 +37,30 @@ class FilterEditViewModel @Inject constructor(
     private val _errorMessage: MutableStateFlow<String?> = MutableStateFlow(null)
     val errorMessage: StateFlow<String?> = _errorMessage
 
-    private var mCurrentFilterMetadata: FilterMetadata? = null
-    private var currantPackageName: String? = null
+    private var isCreation: Boolean = true
+
+    private val currentEditState: FilterUIState.Edit
+        get() = uiState.value as FilterUIState.Edit
+
 
     suspend fun startWorkForCreate(packageName: String) {
-        currantPackageName = packageName
-        _uiState.emit(FilterEditUIState.Edit.asCreate(packageName))
+        isCreation = true
+        _uiState.emit(FilterUIState.Edit.asCreate(
+            packageName = packageName,
+            mode = appPreferences.DEFAULT_FILTER_MODE,
+            enabled = appPreferences.DEFAULT_FILTER_ENABLED
+        ))
     }
 
     suspend fun startWorkForEdit(filterId: String) {
+        isCreation = false
         filterRepository.get(filterId).also { filter: Filter? ->
             _uiState.emit(
                 if (null != filter) {
-                    mCurrentFilterMetadata = filter.filterMetadata
-                    FilterEditUIState.Edit.asEdit(filter.filterMetadata)
+                    FilterUIState.Edit.asEdit(filter.filterMetadata)
+                } else {
+                    FilterUIState.Error(NoSuchFilterException(filterId))
                 }
-                else FilterEditUIState.Error(NoSuchFilterException(filterId))
             )
         }
 
@@ -69,22 +76,22 @@ class FilterEditViewModel @Inject constructor(
         isEnabled: Boolean?
     ) {
         try {
-            if (null != mCurrentFilterMetadata) {
-                filterRepository.update(
-                    Filter.create(FilterMetadata(
-                        id = mCurrentFilterMetadata!!.id,
-                        packageName = mCurrentFilterMetadata!!.packageName,
+            if (isCreation) {
+                filterRepository.add(
+                    Filter.create(FilterMetadata.create(
+                        packageName = currentEditState.packageName,
                         mode = newFilterMode!!,
-                        enabled = isEnabled!!,
-                        modified = currentTimestamp
+                        isEnabled = isEnabled!!
                     ))
                 )
             } else {
-                filterRepository.add(
-                    Filter.create(FilterMetadata.create(
-                        packageName = currantPackageName!!,
-                        mode = newFilterMode!!,
-                        isEnabled = isEnabled!!
+                filterRepository.update(
+                    Filter.create(FilterMetadata(
+                        id = currentEditState.id!!,
+                        packageName = currentEditState.packageName,
+                        mode = currentEditState.mode!!,
+                        enabled = currentEditState.enabled,
+                        modified = currentTimestamp
                     ))
                 )
             }
@@ -98,7 +105,7 @@ class FilterEditViewModel @Inject constructor(
     }
 
     suspend fun showError(exception: Exception) {
-        _uiState.emit(FilterEditUIState.Error(exception))
+        _uiState.emit(FilterUIState.Error(exception))
     }
 
     suspend fun deleteFilter(filterId: String) {

@@ -1,15 +1,15 @@
 package com.github.aakumykov.compose_playground.ui.filter_edit
 
-import androidx.compose.ui.util.packInts
 import com.github.aakumykov.compose_playground.model.FilterMetadata
 import com.github.aakumykov.compose_playground.model.FilterMode
 import com.github.aakumykov.compose_playground.model.Rule
+import com.github.aakumykov.compose_playground.utils.newRandomId
 
-sealed interface FilterEditUIState {
+sealed interface FilterUIState {
 
-    object Loading: FilterEditUIState
+    object Loading: FilterUIState
 
-    data class Error(val throwable: Throwable): FilterEditUIState
+    data class Error(val throwable: Throwable): FilterUIState
 
     data class Edit(
         val id: String?,
@@ -18,11 +18,11 @@ sealed interface FilterEditUIState {
         val enabled: Boolean,
         val rules: List<Rule>? = emptyList()
 
-    ): FilterEditUIState {
+    ): FilterUIState {
 
         companion object {
             fun fromExistingState(
-                state: FilterEditUIState.Edit,
+                state: FilterUIState.Edit,
                 additionalRules: List<Rule>
             ): Edit {
                 return Edit(
@@ -36,14 +36,29 @@ sealed interface FilterEditUIState {
                     }
                 )
             }
-            fun asCreate(packageName: String): Edit {
+
+            fun asCreate(
+                packageName: String,
+                mode: FilterMode,
+                enabled: Boolean
+            ): Edit {
                 return Edit(
-                    id = null,
+                    id = newRandomId,
                     packageName = packageName,
-                    mode = null,
-                    enabled = false
+                    mode = mode,
+                    enabled = enabled
                 )
             }
+
+            fun asCreate(filterMetadata: FilterMetadata): Edit {
+                return Edit(
+                    id = filterMetadata.id,
+                    packageName = filterMetadata.packageName,
+                    mode = filterMetadata.mode,
+                    enabled = filterMetadata.enabled
+                )
+            }
+
             fun asEdit(filterMetadata: FilterMetadata): Edit {
                 return Edit(
                     id = filterMetadata.id,
