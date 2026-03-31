@@ -20,6 +20,14 @@ class Filter(
             filterMetadata = filterMetadata,
             rules = emptyList()
         )
+
+        fun random(): Filter {
+            val filterMetadata = FilterMetadata.random
+            return Filter(
+                filterMetadata = filterMetadata,
+                rules = Rule.randomList(filterMetadata.id)
+            )
+        }
     }
 }
 
