@@ -32,4 +32,6 @@
     <string name="page_title_rule_edit">Изменение правила</string>
     <string name="page_title_rule_create">Добавление правила</string>
     <string name="rule_list_item_title">%1$s %2$s %3$s</string>
+    <string name="rules_list_is_empty">Правил ещё нет</string>
+    <string name="filter_edit_add_rulle_button_tex">Добавить правило</string>
 </resources>

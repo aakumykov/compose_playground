@@ -29,8 +29,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.github.aakumykov.compose_playground.R
@@ -100,7 +98,7 @@ fun FilterEditForm(
             )
         }
 
-        RulesList(
+        RuleList(
             rules = rules,
             modifier = Modifier.weight(1f, true),
             onAddRuleClicked = onAddRuleClicked,
@@ -141,7 +139,7 @@ fun FilterEditForm(
 
 
 @Composable
-fun RulesList(
+fun RuleList(
     rules: List<Rule>,
     modifier: Modifier = Modifier,
     onAddRuleClicked: () -> Unit,
@@ -152,30 +150,42 @@ fun RulesList(
             .fillMaxWidth()
             .background(Color(0xFFE5E5F1))
     ) {
-        LazyColumn(
-            modifier = Modifier.fillMaxWidth()
-                .padding(8.dp)
-        ) {
-            items(items = rules, key = { it.id }) { rule ->
-                RuleListItem(
-                    rule,
-                    verticalPadding = 6.dp,
-                    onClick = onRuleClicked
-                )
-                Divider()
+        if (rules.isEmpty()) {
+            Text(stringResource(R.string.rules_list_is_empty),
+                modifier = Modifier.align(Alignment.Center)
+            )
+        } else {
+            LazyColumn(
+                modifier = Modifier.fillMaxWidth()
+                    .padding(8.dp)
+            ) {
+                items(items = rules, key = { it.id }) { rule ->
+                    RuleListItem(
+                        rule,
+                        verticalPadding = 6.dp,
+                        onClick = onRuleClicked
+                    )
+                    Divider()
+                }
             }
         }
 
         FloatingActionButton(
             onClick = onAddRuleClicked,
             modifier = Modifier
-                .align(Alignment.BottomEnd)
-                .padding(20.dp)
+                .padding(horizontal = 16.dp)
+                .align(Alignment.Center)
         ) {
-            Icon(
-                painter = painterResource(R.drawable.baseline_add_24),
-                contentDescription = stringResource(R.string.description_filter_add_button)
-            )
+            Row(verticalAlignment = Alignment.CenterVertically) {
+                Text(
+                    stringResource(R.string.filter_edit_add_rulle_button_tex),
+                    modifier = Modifier.padding(horizontal = 8.dp)
+                )
+                Icon(
+                    painter = painterResource(R.drawable.baseline_add_24),
+                    contentDescription = stringResource(R.string.description_filter_add_button)
+                )
+            }
         }
     }
 }
