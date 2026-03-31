@@ -125,7 +125,7 @@ fun FilterEditForm(
             ),
             modifier = Modifier.fillMaxWidth()
         ) {
-            Text(stringResource(R.string.button_cancel_edit))
+            Text(stringResource(R.string.button_cancel))
         }
 
         if (null != state.id) {
